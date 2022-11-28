@@ -19,8 +19,8 @@ class ProductManager {
 
         const codeExist = this.products.find(product => product.code === code);
         if (codeExist){
-            console.log("The code already exist.");
-            return "The code already exist.";
+            console.log("The code already exists.");
+            return "The code already exists.";
         }
 
         const product = {
@@ -46,8 +46,8 @@ class ProductManager {
     getProductById(productId){
         this.#readProducts();
         const productById = this.products.find(product => product.id === productId);
-        console.log(productById || "El producto no Existe")
-        return (productById || "El producto no Existe");
+        console.log(productById || "This product does not exist.")
+        return (productById || "This product does not exist.");
     }
 
     updateProduct(productId, productToUpdate){
@@ -64,9 +64,14 @@ class ProductManager {
 
     deleteProduct(productId){
         this.#readProducts();
-        this.products = this.products.filter(product => product.id !== productId);
-        this.#writeProducts(this.products);
-        console.log("Product deleted!");
+        const productToDelete = this.getProductById(productId);
+        if(productToDelete !== "This product does not exist."){
+            this.products.pop(productToDelete);
+            this.#writeProducts(this.products);
+            console.log("Product Deleted!");
+            return "Product Deleted!";
+        }
+        return productToDelete;
     }
 
     #getMaxId() {
@@ -134,4 +139,5 @@ productManager.getProductById(3);
 productManager.updateProduct(1, testProduct3);
 productManager.getProducts();
 productManager.deleteProduct(2);
+productManager.deleteProduct(3);
 productManager.getProducts(); */
