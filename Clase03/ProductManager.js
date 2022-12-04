@@ -35,7 +35,7 @@ class ProductManager {
 
         this.products.push(product);
         this.#writeProducts(this.products);
-        console.log("Product added!");
+        return console.log("Product added!");
     }
 
     getProducts(){
@@ -50,28 +50,34 @@ class ProductManager {
         return (productById || "This product does not exist.");
     }
 
-    updateProduct(productId, productToUpdate){
+    updateProduct(productId, key, value){
         this.#readProducts();
-        const newProduct = {
-            id: productId,
-            ...productToUpdate
-        }
-        this.products = this.products.filter(product => product.id !== productId);
-        this.products.push(newProduct);
-        this.#writeProducts(this.products);
-        console.log("Product Updated!")
+        const productById = this.getProductById(productId);
+        if(productById !== "This product does not exist."){
+            const keys = Object.keys(productById)
+            if(keys.includes(key)){
+                const newProduct = {
+                    id: productId,
+                    ...productById,
+                    [key]: value
+                }
+                this.products = this.products.filter(product => product.id !== productId);
+                this.products.push(newProduct);
+                this.#writeProducts(this.products);
+                return console.log("Product Updated!");
+            }
+            return console.log(`The Key: ${key} is not valid.`);
+        } return console.log(productById);
     }
 
     deleteProduct(productId){
-        this.#readProducts();
         const productToDelete = this.getProductById(productId);
         if(productToDelete !== "This product does not exist."){
-            this.products.pop(productToDelete);
+            this.products = this.products.filter(product => product.id !== productId);
             this.#writeProducts(this.products);
-            console.log("Product Deleted!");
-            return "Product Deleted!";
+            return console.log("Product Deleted!");
         }
-        return productToDelete;
+        return console.log(productToDelete);
     }
 
     #getMaxId() {
@@ -114,7 +120,7 @@ const testProduct2 = {
     price: 200,
     thumbnail: "Sin imagen",
     code: "abc124",
-    stock: 25
+    stock: 25,
 }
 
 const testProduct3 = {
@@ -127,17 +133,10 @@ const testProduct3 = {
 }
 
 const productManager = new ProductManager();
-/* productManager.getProducts();
-productManager.addProduct(testProduct1);
-productManager.getProducts();
 productManager.addProduct(testProduct1);
 productManager.addProduct(testProduct2);
+productManager.addProduct(testProduct3);
 productManager.getProducts();
-productManager.getProductById(1);
-productManager.getProductById(2);
-productManager.getProductById(3);
-productManager.updateProduct(1, testProduct3);
+productManager.updateProduct(2, "kappa", "2");
+productManager.updateProduct(2, "stock", 20);
 productManager.getProducts();
-productManager.deleteProduct(2);
-productManager.deleteProduct(3);
-productManager.getProducts(); */
