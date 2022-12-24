@@ -1,10 +1,8 @@
 
-import ProductManager from "../Products/ProductManager.js";
+import productManager from "../products/ProductManager.js";
 import { Router } from "express";
 
 const productsRouter = Router();
-
-let productManager = new ProductManager();
 
 productsRouter.get("/", (req, res) => {
     const { limit } = req.query;

@@ -5,7 +5,7 @@ const CART_NOT_EXIST = "No cart found with that Id.";
 class CartManager {
     constructor() {
         this.carts = [];
-        this.path = "./src/Carts/Carts.json";
+        this.path = "./src/carts/Carts.json";
     }
 
     createCart(productsObject) {
@@ -91,4 +91,4 @@ class CartManager {
     }
 }
 
-export default CartManager;
+export default new CartManager();

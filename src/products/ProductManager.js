@@ -5,7 +5,7 @@ const PRODUCT_NOT_EXIST = "This product does not exist.";
 class ProductManager {
     constructor() {
        this.products = [];
-       this.path = "./src/Products/Products.json";
+       this.path = "./src/products/Products.json";
     }
 
     addProduct(productToAdd){
@@ -114,4 +114,4 @@ class ProductManager {
     }
 }
 
-export default ProductManager;
+export default new ProductManager();

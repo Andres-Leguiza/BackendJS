@@ -1,9 +1,8 @@
 
 import { Router } from "express";
-import CartManager from './../Carts/CartManager.js';
+import cartManager from '../carts/CartManager.js';
 
 const cartsRouter = Router();
-const cartManager = new CartManager();
 
 cartsRouter.post("/", (req, res) => {
     const products = req.body;
