@@ -4,6 +4,11 @@ import cartManager from '../carts/CartManager.js';
 
 const cartsRouter = Router();
 
+cartsRouter.get("/", (req, res) => {
+    const response = cartManager.getCarts();
+    res.status(response.status).json(response.detail);
+});
+
 cartsRouter.post("/", (req, res) => {
     const products = req.body;
     const response = cartManager.createCart(products);

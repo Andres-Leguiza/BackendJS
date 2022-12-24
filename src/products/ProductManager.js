@@ -14,7 +14,7 @@ class ProductManager {
         
         if(!title || !description || (price !== 0 && !price) || !code || (stock !== 0 && !stock)){
             console.log("All the attributes are required.");
-            return { status: 400,  detail: { message: "All the attributes are required." }};
+            return { status: 400, detail: { message: "All the attributes are required." }};
         }
 
         this.#readProducts();
@@ -39,12 +39,11 @@ class ProductManager {
         this.products.push(product);
         this.#writeProducts(this.products);
         console.log("Product added!");
-        return { status: 201,  detail: { message: "Product added!" }};
+        return { status: 201, detail: { message: "Product added!" }};
     }
 
     getProducts(){
         this.#readProducts();
-        console.log(this.products);
         return this.products;
     }
 
@@ -54,8 +53,8 @@ class ProductManager {
         const result = productById || PRODUCT_NOT_EXIST;
         console.log(result);
         return result !== PRODUCT_NOT_EXIST ? 
-        { status: 200,  detail: result} :
-        { status: 404,  detail: { message: PRODUCT_NOT_EXIST }};
+        { status: 200, detail: result} :
+        { status: 404, detail: { message: PRODUCT_NOT_EXIST }};
     }
 
     updateProduct(productId, productToUpdate){
@@ -70,10 +69,10 @@ class ProductManager {
             this.products.push(newProduct);
             this.#writeProducts(this.products);
             console.log("Product Updated!")
-            return { status: 200,  detail: { message: "Product Updated!" }};
+            return { status: 200, detail: { message: "Product Updated!" }};
         } 
         console.log(productById);
-        return { status: 404,  detail: { message: PRODUCT_NOT_EXIST }};
+        return { status: 404, detail: { message: PRODUCT_NOT_EXIST }};
     }
 
     deleteProduct(productId){
@@ -82,17 +81,15 @@ class ProductManager {
             this.products = this.products.filter(product => product.id !== productId);
             this.#writeProducts(this.products);
             console.log("Product Deleted!");
-            return { status: 200,  detail: { message: "Product Deleted!" }};
+            return { status: 200, detail: { message: "Product Deleted!" }};
         }
         console.log(productToDelete);
-        return { status: 404,  detail: { message: PRODUCT_NOT_EXIST }};
+        return { status: 404, detail: { message: PRODUCT_NOT_EXIST }};
     }
 
     #getMaxId() {
         let maxId = 0;
-        this.products.map((product) => {
-            if (product.id > maxId) maxId = product.id;
-        });
+        this.products.forEach(product => product.id > maxId && (maxId = product.id));
         return maxId;
     }
 

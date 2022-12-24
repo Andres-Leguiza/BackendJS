@@ -1,7 +1,7 @@
-import express from 'express';
+import { Router } from 'express';
 import productManager from "../products/ProductManager.js";
 
-const viewsRouter = express.Router();
+const viewsRouter = Router();
 
 viewsRouter.get('/', (req, res) => {
     let products = productManager.getProducts();

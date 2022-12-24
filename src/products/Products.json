@@ -37,5 +37,18 @@
     ],
     "code": "abc122",
     "stock": 25
+  },
+  {
+    "id": 4,
+    "title": "producto 4",
+    "description": "Este es un producto prueba",
+    "price": 200,
+    "status": true,
+    "thumbnails": [
+      "/img/imagen1",
+      "/img/imagen2"
+    ],
+    "code": "abc126",
+    "stock": 25
   }
 ]
