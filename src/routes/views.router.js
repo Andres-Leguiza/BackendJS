@@ -1,16 +1,13 @@
 import { Router } from 'express';
-import productManager from "../products/ProductManager.js";
+import * as ProductController from '../controllers/product.controller.js'
 
 const viewsRouter = Router();
 
-viewsRouter.get('/', (req, res) => {
-    let products = productManager.getProducts();
+viewsRouter.get('/', () => {
+    let products = getProducts;
     res.render('home', { products });
 });
 
-viewsRouter.get('/realtimeproducts', (req, res) => {
-    let products = productManager.getProducts();
-    res.render('realTimeProducts', { products });
-});
+viewsRouter.get('/realtimeproducts', ProductController.getRealtimeProducts);
 
 export default viewsRouter;

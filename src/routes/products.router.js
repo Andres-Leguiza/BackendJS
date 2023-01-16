@@ -1,49 +1,16 @@
-
-import productManager from "../products/ProductManager.js";
-import { Router } from "express";
+import * as ProductController from '../controllers/product.controller.js'
+import { Router }  from "express";
 
 const productsRouter = Router();
 
-productsRouter.get("/", (req, res) => {
-    const { limit } = req.query;
-    let products = productManager.getProducts();
-    if(limit && limit > 0 && limit < products.length){
-        products = products.splice(0, limit);
-    }
-    res.status(200).json(products);
-});
+productsRouter.get("/", ProductController.getProducts);
 
-productsRouter.get("/:pid", (req, res) => {
-    const { pid } = req.params;
-    let response = productManager.getProductById(Number(pid));
-    res.status(response.status).json(response.detail);
-});
+productsRouter.get("/:pid", ProductController.getProduct);
 
-productsRouter.post("/", (req, res) => {
-    const productToAdd = req.body;
-    const response = productManager.addProduct(productToAdd);
-    if(response.status == 201){
-        const productsList = productManager.getProducts();
-        req.io.emit('updateProducts', productsList);
-    }
-    res.status(response.status).json(response.detail);
-});
+productsRouter.post("/", ProductController.addProduct);
 
-productsRouter.put("/:pid", (req, res) => {
-    const { pid } = req.params;
-    const productToUpdate = req.body;
-    const response = productManager.updateProduct(Number(pid), productToUpdate);
-    res.status(response.status).json(response.detail);
-});
+productsRouter.put("/:pid", ProductController.updateProduct);
 
-productsRouter.delete("/:pid", (req, res) => {
-    const { pid } = req.params;
-    const response = productManager.deleteProduct(Number(pid));
-    if(response.status == 200){
-        const productsList = productManager.getProducts();
-        req.io.emit('updateProducts', productsList);
-    }
-    res.status(response.status).json(response.detail);
-});
+productsRouter.delete("/:pid", ProductController.deleteProduct);
 
 export default productsRouter;

@@ -2,12 +2,15 @@ import express from "express";
 import __dirname from './utils.js';
 import { Server } from 'socket.io';
 import handlebars from 'express-handlebars';
-import viewsRouter from './routes/views.router.js';
-import productsRouter from "./routes/products.router.js";
-import cartsRouter from './routes/carts.router.js';
+import ViewsRouter from './routes/views.router.js';
+import ProductsRouter from "./routes/products.router.js";
+import CartsRouter from './routes/carts.router.js';
+import "./config/db.js";
+import dotenv from 'dotenv'
 
+dotenv.config();
 const app = express();
-const httpServer = app.listen(8080, () => console.log("Server up on port 8080."));
+const httpServer = app.listen(process.env.PORT, () => console.log(`Server up on port ${process.env.PORT}.`));
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname+'/views');
@@ -21,9 +24,9 @@ app.use((req, res, next) => {
 });
 app.on("error", (error) => console.log(error));
 
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-app.use("/views", viewsRouter);
+app.use("/api/products", ProductsRouter);
+app.use("/api/carts", CartsRouter);
+app.use("/views", ViewsRouter);
 
 const socketServer = new Server(httpServer);
 

@@ -19,7 +19,7 @@ let updateProductList = (products) => {
         let bodyDiv = document.createElement("div");
         bodyDiv.classList.add('card-body');
         let id = document.createElement("p");
-        id.innerText = `Id: ${product.id}`;
+        id.innerText = `Id: ${product._id}`;
         let description = document.createElement("p");
         description.innerText = `Descripcion: ${product.description}`;
         let price = document.createElement("p");
