@@ -1,9 +1,20 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import mongooseDelete from "mongoose-delete";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
     {
-        products: [{ product: String, quantity: { type: Number, default: 0 }, _id: false }]
+        products: {
+            type: [
+            {
+                product: {
+                    type: Schema.Types.ObjectId,
+                    ref: "products"
+                },
+                quantity: { type: Number, default: 0 },
+                _id: false
+            }],
+            default: []
+        }
     },
     {
         timestamps: true,
@@ -12,4 +23,4 @@ const schema = new mongoose.Schema(
 
 schema.plugin(mongooseDelete, { deletedAt: true });
 
-export const CartModel = mongoose.model("carts", schema);
+export const CartModel = model("carts", schema);

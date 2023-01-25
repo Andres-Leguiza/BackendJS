@@ -1,12 +1,14 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 import mongooseDelete from "mongoose-delete";
+import mongoosePaginate from "mongoose-paginate-v2";
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
     {
         title: { type: String, required: true },
         description: { type: String, required: true },
         price: { type: Number, required: true },
         status: { type: Boolean, default: true },
+        category: { type: String, required: true },
         thumbnails: [String],
         code: { type: String, unique: true, required: true },
         stock: { type: Number, required: true }
@@ -17,5 +19,6 @@ const schema = new mongoose.Schema(
 );
 
 schema.plugin(mongooseDelete, { deletedAt: true });
+schema.plugin(mongoosePaginate);
 
-export const ProductModel = mongoose.model("products", schema);
+export const ProductModel = model("products", schema);

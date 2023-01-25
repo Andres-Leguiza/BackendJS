@@ -1,4 +1,3 @@
-
 import * as CartService from '../services/cart.service.js'
 import { STATUS } from '../constants/constants.js';
 
@@ -16,7 +15,6 @@ export async function getCarts(req, res){
                 status: STATUS.SUCCESS
             });
         }
-        
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -67,6 +65,100 @@ export async function addProductToCart(req, res){
     try {
         const { cid, pid } = req.params;
         const response = await CartService.addProductToCart(cid, pid);
+        if (!response){
+            res.status(404).json({
+                message: "Cart was not found.",
+                status: STATUS.FAILED
+            });
+        } else {
+            res.json({
+                cart: response,
+                status: STATUS.SUCCESS
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+            status: STATUS.FAILED
+        });
+    }
+}
+
+export async function updateProductQty(req, res){
+    try {
+        const { cid, pid } = req.params;
+        const { body } = req;
+        const response = await CartService.updateProductQty(cid, pid, body.quantity);
+        if (!response){
+            res.status(404).json({
+                message: "Cart was not found.",
+                status: STATUS.FAILED
+            });
+        } else {
+            res.json({
+                cart: response,
+                status: STATUS.SUCCESS
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+            status: STATUS.FAILED
+        });
+    }
+}
+
+export async function updateCart(req, res){
+    try {
+        const { cid } = req.params;
+        const { body } = req;
+        const response = await CartService.updateCart(cid, body);
+        if (!response){
+            res.status(404).json({
+                message: "Cart was not found.",
+                status: STATUS.FAILED
+            });
+        } else {
+            res.json({
+                cart: response,
+                status: STATUS.SUCCESS
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+            status: STATUS.FAILED
+        });
+    }
+}
+
+export async function deleteProduct(req, res){
+    try {
+        const { cid, pid } = req.params;
+        const response = await CartService.deleteProduct(cid, pid);
+        if (!response){
+            res.status(404).json({
+                message: "Cart was not found.",
+                status: STATUS.FAILED
+            });
+        } else {
+            res.json({
+                cart: response,
+                status: STATUS.SUCCESS
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: error.message,
+            status: STATUS.FAILED
+        });
+    }
+}
+
+export async function deleteProducts(req, res){
+    try {
+        const { cid } = req.params;
+        const response = await CartService.deleteProducts(cid);
         if (!response){
             res.status(404).json({
                 message: "Cart was not found.",
