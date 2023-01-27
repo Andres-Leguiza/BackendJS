@@ -66,8 +66,10 @@ export async function updateProductQty(cartId, productId, quantity){
 export async function updateCart(cartId, data){
     try {
         const cart = await CartModel.findById(cartId);
-        cart.products = data.products;
-        await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+        if(cart){
+            cart.products = data.products;
+            await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+        }
         return cart;
     } catch (error) {
         throw new Error(error.message);
@@ -90,8 +92,10 @@ export async function deleteProduct(cartId, productId){
 export async function deleteProducts(cartId){
     try {
         const cart = await CartModel.findById(cartId);
-        cart.products = [];
-        await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+        if (cart) {
+            cart.products = [];
+            await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+        }
         return cart;
     } catch (error) {
         throw new Error(error.message);
