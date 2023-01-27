@@ -1,6 +1,7 @@
 <div class="container">
     <h1 class="d-flex justify-content-center mt-3">Carrito de Compras:</h1>
     <div id="productsContainer" class="d-flex flex-column mt-5">
+        {{#if products.length}}
         {{#each products}}
         <div class="card flex-row ms-2 my-2">
             <h5 class="card-header fs-6 text-center d-flex align-items-center border-bottom-0">{{product.title}}</h5>
@@ -31,6 +32,9 @@
             <input type="hidden" value="productId_{{product._id}}" />
         </div>
         {{/each}}
+        {{else}}
+            <h2 class="d-flex justify-content-center mt-3">Su carrito está vacío</h2>
+        {{/if}}
         <input type="hidden" value="cartId_{{_id}}" />
     </div>
 </div>

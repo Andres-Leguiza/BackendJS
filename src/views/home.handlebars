@@ -1,6 +1,7 @@
 <div class="container">
     <h1 class="d-flex justify-content-center mt-3">Lista de Productos:</h1>
     <div id="productsContainer" class="d-flex flex-wrap justify-content-evenly mt-5">
+        {{#if docs.length}}
         {{#each docs}}
         <div class="card ms-2 my-2 ">
             <h5 class="card-header d-flex justify-content-center">{{title}}</h5>
@@ -17,6 +18,9 @@
             <input type="hidden" value="productId_{{id}}" />
         </div>
         {{/each}}
+        {{else}}
+            <h2 class="d-flex justify-content-center mt-3">No hay productos para mostrar.</h2>
+        {{/if}}
     </div>
     <div class="d-flex justify-content-end my-5">
         {{#if hasPrevPage}}
