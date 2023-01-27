@@ -4,8 +4,7 @@ import mongooseDelete from "mongoose-delete";
 const schema = new Schema(
     {
         products: {
-            type: [
-            {
+            type: [{
                 product: {
                     type: Schema.Types.ObjectId,
                     ref: "products"

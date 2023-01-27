@@ -14,7 +14,7 @@ const schema = new Schema(
         stock: { type: Number, required: true }
     },
     {
-        timestamps: true,
+        timestamps: true
     }
 );
 

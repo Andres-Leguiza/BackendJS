@@ -11,7 +11,7 @@ export async function getCarts(){
 
 export async function getCart(cartId){
     try {
-        const cart = await CartModel.find({ _id: cartId }).populate("products.product");
+        const cart = await CartModel.findById({ _id: cartId }).populate("products.product").lean();
         return cart;
     } catch (error) {
        throw new Error(error.message);
