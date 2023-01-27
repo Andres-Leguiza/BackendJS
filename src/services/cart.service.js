@@ -34,8 +34,10 @@ export async function addProductToCart(cartId, productId){
             const productToUpdate = cart.products.find(product => product.product == productId);
             if (productToUpdate){
                 productToUpdate.quantity = productToUpdate.quantity + 1;
-                await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+            } else {
+                cart.products.push({ product: productId });
             }
+            await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
         }
         return cart;
     } catch (error) {
@@ -50,8 +52,10 @@ export async function updateProductQty(cartId, productId, quantity){
             const productToUpdate = cart.products.find(product => product.product == productId);
             if (productToUpdate){
                 productToUpdate.quantity = quantity;
-                await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
+            } else {
+                cart.products.push({ product: productId, quantity: quantity });
             }
+            await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
         }
         return cart;
     } catch (error) {
