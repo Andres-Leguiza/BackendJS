@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --inspect ./src/app.js --verbose --ignore Products.json --ignore Carts.json"
+    "dev": "nodemon --inspect ./src/server.js"
   },
   "keywords": [],
   "author": "",
