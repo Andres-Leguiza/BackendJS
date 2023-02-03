@@ -26,6 +26,10 @@ const schema = new Schema(
       minLength: 6,
       maxLength: 20,
     },
+    role: {
+      type: String,
+      default: "usuario"
+    }
   },
   {
     timestamps: true,

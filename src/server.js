@@ -14,12 +14,14 @@ import UserRouter from "./routes/user.router.js";
 import AuthRouter from "./routes/auth.router.js";
 
 const app = express();
-app.listen(process.env.PORT, () => console.log(`Server up on port ${process.env.PORT}.`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server up on port ${PORT}.`));
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname+'/views');
 app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/public'));
+app.use(express.static(__dirname+'/img'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.on("error", (error) => console.log(error));

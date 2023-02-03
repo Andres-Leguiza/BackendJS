@@ -1,0 +1,44 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand" href="login">eCommerce</a>
+    </div>
+</nav>
+<div class="container">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <h1 class="d-flex justify-content-center text-dark text-opacity-75 my-3">Login</h1>
+        <div class="container w-50 mt-5">
+        {{#if success}}
+        <div class="d-flex justify-content-center">
+            <div id="alert_success" class="alert alert-success">
+                <strong>{{success}}</strong>
+            </div>
+        </div>
+        {{/if}}
+        {{#if error}}
+        <div class="d-flex justify-content-center">
+            <div id="alert_error" class="alert alert-danger">
+                <strong>{{error}}</strong>
+            </div>
+        </div>
+        {{/if}}
+            <form onfocusin="hideMessage()" action="login" method="post">
+                    <label for="email" class="col-form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" autocomplete="username" required="true">
+                    <label for="password" class="col-form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" autocomplete="current-password" required="true">
+                    <button type="submit" class="btn btn-sm btn-outline-dark w-100 mt-3">Login</button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="m-0"><span class="align-middle">If you don't have an account, please</span> 
+                    <a class="btn btn-sm btn-outline-dark border-0 ms-1" href="register">Register Here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function hideMessage(){
+        if(document.getElementById("alert_success")) document.getElementById("alert_success").style.display = "none";
+        if(document.getElementById("alert_error")) document.getElementById("alert_error").style.display = "none";
+    }
+</script>

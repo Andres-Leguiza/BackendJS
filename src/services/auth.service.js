@@ -6,11 +6,7 @@ export async function login(email, password) {
     if (!user) {
       throw new Error("User is not registered.");
     } else {
-      if (password === user.password) {
-        return true;
-      } else {
-        return false;
-      }
+      return password === user.password;
     }
   } catch (error) {
     throw new Error(error.message);

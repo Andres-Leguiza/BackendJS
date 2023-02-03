@@ -1,5 +1,50 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand" href="register">eCommerce</a>
+    </div>
+</nav>
 <div class="container">
-    <h1 class="d-flex justify-content-center mt-3">Registración</h1>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <h1 class="d-flex justify-content-center text-dark text-opacity-75 my-3">Registration</h1>
+        <div class="container w-50 mt-5">
+        {{#if success}}
+        <div class="d-flex justify-content-center">
+            <div id="alert_success" class="alert alert-success">
+                <strong>{{success}}</strong>
+            </div>
+        </div>
+        {{/if}}
+        {{#if error}}
+        <div class="d-flex justify-content-center">
+            <div id="alert_error" class="alert alert-danger">
+                <strong>{{error}}</strong>
+            </div>
+        </div>
+        {{/if}}
+            <form onfocusin="hideMessage()" action="register" method="post">
+                <label for="first_name" class="col-form-label">First Name</label>
+                <input type="text" class="form-control" name="first_name" id="first_name" required="true">
+                <label for="last_name" class="col-form-label">Last Name</label>
+                <input type="text" class="form-control" name="last_name" id="last_name" required="true">
+                <label for="email" class="col-form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" autocomplete="username" required="true">
+                <label for="age" class="col-form-label">Age</label>
+                <input type="number" class="form-control" name="age" id="age" required="true">
+                <label for="password" class="col-form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" autocomplete="current-password" required="true">
+                <button type="submit" class="btn btn-sm btn-outline-dark w-100 mt-3">Register</button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="m-0"><span class="align-middle">You already have an account? Please</span> 
+                    <a class="btn btn-sm btn-outline-dark border-0 ms-1" href="login">Login Here</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script>
+    function hideMessage(){
+        if(document.getElementById("alert_success")) document.getElementById("alert_success").style.display = "none";
+        if(document.getElementById("alert_error")) document.getElementById("alert_error").style.display = "none";
+    }
+</script>

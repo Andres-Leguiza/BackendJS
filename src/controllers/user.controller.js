@@ -5,6 +5,7 @@ export async function createUser(req, res) {
   try {
     const data = req.body;
     const user = await UserService.createUser(data);
+    delete user.password;
     res.status(201).json({
         user,
         status: STATUS.SUCCESS
@@ -14,6 +15,18 @@ export async function createUser(req, res) {
         error: error.message,
         status: STATUS.FAILED
     });
+  }
+}
+
+export async function createUserFromForm(req, res) {
+  try {
+    const data = req.body;
+    const user = await UserService.createUser(data);
+    req.session.authenticated = true;
+    req.session.userEmail = user.email;
+    res.redirect("products");
+  } catch (error) {
+    res.render("registration", { error: error.message });
   }
 }
 
