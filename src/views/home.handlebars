@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-between">
-        <a class="navbar-brand" href="products">eCommerce</a>
+        <a class="navbar-brand" href="/views/products">eCommerce</a>
         <div class="btn-group">
             <button class="btn border-0 me-5" type="button" id="defaultDropdown" data-bs-toggle="dropdown" 
                     data-bs-auto-close="true" aria-expanded="false">
@@ -16,6 +16,9 @@
       <div class="ms-5">
         <h3 class="text-primary text-opacity-75 mt-4">Welcome {{user.first_name}} {{user.last_name}}!</h3>
         <h5 class="text-primary text-opacity-75 ms-2 mt-1">Email: {{user.email}} - Age: {{user.age}}</h5>
+        {{#if isAdmin}}
+            <h5 class="text-danger text-opacity-75 ms-2 mt-1">Admin Role</h5>
+        {{/if}}
       </div>
     {{/if}}
     <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">Products List:</h1>

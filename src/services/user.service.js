@@ -1,10 +1,11 @@
-import { UserModel } from "../models/user.model.js";
+import { UserModel } from '../models/user.model.js';
+import { EMAIL_ALREADY_USED } from '../constants/constants.js'
 
 export async function createUser(data) {
   try {
     const userRegistered = await getUser(data.email);
     if (userRegistered) {
-      throw new Error("This email address is already in use.");
+      throw new Error(EMAIL_ALREADY_USED);
     } else {
       const user = await UserModel.create(data);
       return user._doc;

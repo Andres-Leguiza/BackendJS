@@ -1,24 +1,24 @@
 import * as CartService from '../services/cart.service.js'
-import { STATUS } from '../constants/constants.js';
+import * as Constants from '../constants/constants.js';
 
 export async function getCarts(req, res){
     try {
-        const response = await CartService.getCarts();
-        if (response.length == 0){
+        const carts = await CartService.getCarts();
+        if (carts.length == 0){
             res.status(404).json({
-                message: "Carts were not found.",
-                status: STATUS.FAILED
+                message: Constants.CARTS_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                carts: response,
-                status: STATUS.SUCCESS
+                carts,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(500).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -26,21 +26,21 @@ export async function getCarts(req, res){
 export async function getCart(req, res){
     try {
         const { cid } = req.params;
-        const response = await CartService.getCart(cid);
-        if (response.length == 0){
+        const cart = await CartService.getCart(cid);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         }
         res.json({
-            cart: response,
-            status: STATUS.SUCCESS
+            cart,
+            status: Constants.STATUS.SUCCESS
         })
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -48,15 +48,15 @@ export async function getCart(req, res){
 export async function createCart(req, res){
     try {
         const { body } = req;
-        const response = await CartService.createCart(body);
+        const cart = await CartService.createCart(body);
         res.status(201).json({
-            cart: response,
-            status: STATUS.SUCCESS
+            cart,
+            status: Constants.STATUS.SUCCESS
         });
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -64,22 +64,22 @@ export async function createCart(req, res){
 export async function addProductToCart(req, res){
     try {
         const { cid, pid } = req.params;
-        const response = await CartService.addProductToCart(cid, pid);
-        if (!response){
+        const cart = await CartService.addProductToCart(cid, pid);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                cart: response,
-                status: STATUS.SUCCESS
+                cart,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -88,22 +88,22 @@ export async function updateProductQty(req, res){
     try {
         const { cid, pid } = req.params;
         const { body } = req;
-        const response = await CartService.updateProductQty(cid, pid, body.quantity);
-        if (!response){
+        const cart = await CartService.updateProductQty(cid, pid, body.quantity);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                cart: response,
-                status: STATUS.SUCCESS
+                cart,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -112,22 +112,22 @@ export async function updateCart(req, res){
     try {
         const { cid } = req.params;
         const { body } = req;
-        const response = await CartService.updateCart(cid, body);
-        if (!response){
+        const cart = await CartService.updateCart(cid, body);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                cart: response,
-                status: STATUS.SUCCESS
+                cart,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -135,22 +135,22 @@ export async function updateCart(req, res){
 export async function deleteProduct(req, res){
     try {
         const { cid, pid } = req.params;
-        const response = await CartService.deleteProduct(cid, pid);
-        if (!response){
+        const cart = await CartService.deleteProduct(cid, pid);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                cart: response,
-                status: STATUS.SUCCESS
+                cart,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }
@@ -158,22 +158,22 @@ export async function deleteProduct(req, res){
 export async function deleteProducts(req, res){
     try {
         const { cid } = req.params;
-        const response = await CartService.deleteProducts(cid);
-        if (!response){
+        const cart = await CartService.deleteProducts(cid);
+        if (!cart){
             res.status(404).json({
-                message: "Cart was not found.",
-                status: STATUS.FAILED
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
             });
         } else {
             res.json({
-                cart: response,
-                status: STATUS.SUCCESS
+                cart,
+                status: Constants.STATUS.SUCCESS
             });
         }
     } catch (error) {
         res.status(400).json({
             error: error.message,
-            status: STATUS.FAILED
+            status: Constants.STATUS.FAILED
         });
     }
 }

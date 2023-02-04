@@ -1,4 +1,4 @@
-import { STATUS } from './../constants/constants.js';
+import * as Constants from './../constants/constants.js';
 
 export function apiAuth(req, res, next) {
   if (req.session.authenticated) {
@@ -6,8 +6,8 @@ export function apiAuth(req, res, next) {
     next();
   } else {
     res.status(401).json({
-      error: "User is not authenticated.",
-      status: STATUS.FAILED
+      message: Constants.UNAUTHENTICATED,
+      status: Constants.STATUS.FAILED
     });
   }
 }
@@ -17,6 +17,6 @@ export function auth(req, res, next) {
     req.session.touch();
     next();
   } else {
-    res.redirect("login");
+    res.redirect(Constants.LOGIN_VIEW);
   }
 }
