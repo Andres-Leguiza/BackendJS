@@ -1,7 +1,7 @@
 import * as ProductService from '../services/product.service.js';
 import * as AuthService from '../services/auth.service.js'
 import * as UserService from "../services/user.service.js";
-import * as Constants from "../constants/constants.js"
+import * as Constants from "../constants/constants.js";
 import * as CartService from '../services/cart.service.js';
 
 export async function renderHome(req, res){

@@ -7,11 +7,13 @@ if(process.env.MONGO_URI) import ("./config/db.js");
 import cookie from "cookie-parser";
 import session from "express-session";
 import mongoStore from "connect-mongo";
+import passport from 'passport';
 import ViewsRouter from './routes/views.router.js';
 import ProductsRouter from "./routes/products.router.js";
 import CartsRouter from './routes/carts.router.js';
 import UserRouter from "./routes/user.router.js";
 import AuthRouter from "./routes/auth.router.js";
+import GithubRouter from './routes/github.router.js'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -42,8 +44,12 @@ app.use(
   }),
 );
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/api/products", ProductsRouter);
 app.use("/api/carts", CartsRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/auth", AuthRouter);
+app.use("/api/github", GithubRouter);
 app.use("/views", ViewsRouter);

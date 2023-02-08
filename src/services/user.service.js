@@ -1,5 +1,6 @@
 import { UserModel } from '../models/user.model.js';
-import { EMAIL_ALREADY_USED } from '../constants/constants.js'
+import { EMAIL_ALREADY_USED } from '../constants/constants.js';
+import bcrypt from 'bcrypt';
 
 export async function createUser(data) {
   try {
@@ -7,6 +8,7 @@ export async function createUser(data) {
     if (userRegistered) {
       throw new Error(EMAIL_ALREADY_USED);
     } else {
+      data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
       const user = await UserModel.create(data);
       return user._doc;
     }
