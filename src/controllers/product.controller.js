@@ -55,7 +55,7 @@ export async function getProduct(req, res){
         res.json({
             product,
             status: Constants.STATUS.SUCCESS
-        })
+        });
     } catch (error) {
         res.status(400).json({
             error: error.message,

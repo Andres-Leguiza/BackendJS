@@ -27,7 +27,7 @@ export async function getUser(req, res) {
       res.json({
         user,
         status: Constants.STATUS.SUCCESS
-    })
+      });
     }
   } catch (error) {
     res.status(400).json({

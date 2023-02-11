@@ -1,7 +1,7 @@
 import passport from "passport";
 import passportGithub from 'passport-github2';
 import { UserModel } from "../models/user.model.js";
-import bcrypt from 'bcrypt';
+import { githubLoginRegister } from '../middlewares/github.middleware.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -21,29 +21,6 @@ passport.use('github', new passportGithub.Strategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
-  }, async function (accessToken, refreshToken, profile, done) {
-    try {
-        let user = await UserModel.findOne({ email: profile._json.email});
-        if(!user){
-            const displayName = profile.displayName.split(' ');
-            const newUser = {
-                first_name: displayName[0],
-                last_name: displayName[1],
-                age: 21,
-                email:profile._json.email,
-                githubUser: true,
-                password: bcrypt.hashSync('0', bcrypt.genSaltSync(10))
-            }
-            user = await UserModel.create(newUser);
-            delete user._doc.password;
-            done(null, user._doc);
-        } else {
-            delete user._doc.password;
-            done(null, user._doc);
-        }
-    } catch (error) {
-      throw new Error(error.message)
-    }
-}));
+  }, githubLoginRegister));
 
 export default passport;

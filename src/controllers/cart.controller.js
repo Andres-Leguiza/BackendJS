@@ -36,7 +36,7 @@ export async function getCart(req, res){
         res.json({
             cart,
             status: Constants.STATUS.SUCCESS
-        })
+        });
     } catch (error) {
         res.status(400).json({
             error: error.message,

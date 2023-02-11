@@ -4,7 +4,7 @@ export const STATUS = {
 };
 export const HOME = "home";
 export const LOGIN = "login";
-export const GITHUB_LOGIN_FAIL_URI = "fail";
+export const GITHUB_LOGIN_FAIL_VIEW = "/views/github/fail";
 export const LOGIN_VIEW = "/views/login";
 export const REGISTRATION = "registration";
 export const PRODUCTS_VIEW = "/views/products";
