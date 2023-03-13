@@ -1,5 +1,5 @@
-import * as UserService from '../services/user.service.js';
-import { USER_NOT_REGISTERED, GITHUB_USER } from '../constants/constants.js';
+import * as UserService from './user.service.js';
+import { USER_NOT_REGISTERED, GITHUB_USER } from '../../constants/constants.js';
 import bcrypt from 'bcrypt';
 
 export async function login(email, password) {

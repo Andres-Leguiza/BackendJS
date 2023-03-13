@@ -2,8 +2,7 @@ import passport from "passport";
 import passportGithub from 'passport-github2';
 import { UserModel } from "../models/user.model.js";
 import { githubLoginRegister } from '../middlewares/github.middleware.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import config from "../config/config.js";
 
 passport.serializeUser(function (user, done) {
     console.log("Serializing");
@@ -18,9 +17,9 @@ passport.deserializeUser(function (_id, done) {
 });
 
 passport.use('github', new passportGithub.Strategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL
+    clientID: config.gitHubClientId,
+    clientSecret: config.gitHubClientSecret,
+    callbackURL: config.gitHubCallbackURL
   }, githubLoginRegister));
 
 export default passport;

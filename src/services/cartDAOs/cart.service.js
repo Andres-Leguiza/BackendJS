@@ -1,4 +1,4 @@
-import { CartModel } from './../models/cart.model.js';
+import { CartModel } from '../../models/cart.model.js';
 
 export async function getCarts(){
     try {

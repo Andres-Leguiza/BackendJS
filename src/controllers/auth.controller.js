@@ -1,4 +1,4 @@
-import * as AuthService from "../services/auth.service.js";
+import * as AuthService from "../services/userDAOs/auth.service.js";
 import * as Constants from './../constants/constants.js';
 
 export async function login(req, res) {
@@ -9,18 +9,18 @@ export async function login(req, res) {
       req.session.authenticated = true;
       res.json({
         message: Constants.LOGIN_SUCCESS,
-        status: STATUS.SUCCESS
+        status: Constants.STATUS.SUCCESS
       });
     } else {
       res.status(400).json({
         error: Constants.LOGIN_INVALID_USER_PASS_ERROR,
-        status: STATUS.FAILED
+        status: Constants.STATUS.FAILED
       });
     }
   } catch (error) {
     res.status(400).json({
       error: error.message,
-      status: STATUS.FAILED
+      status: Constants.STATUS.FAILED
     });
   }
 }
@@ -31,19 +31,19 @@ export async function logout(req, res) {
       if (error) {
         res.status(400).json({
           error: error.message,
-          status: STATUS.FAILED
+          status: Constants.STATUS.FAILED
         });
       } else {
         res.json({
           message: Constants.LOGOUT_SUCCESS,
-          status: STATUS.SUCCESS
+          status: Constants.STATUS.SUCCESS
         });
       }
     });
   } catch (error) {
     res.status(400).json({
       error: error.message,
-      status: STATUS.FAILED
+      status: Constants.STATUS.FAILED
     });
   }
 }

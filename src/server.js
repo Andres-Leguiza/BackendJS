@@ -1,9 +1,7 @@
 import express from "express";
 import __dirname from './utils.js';
 import handlebars from 'express-handlebars';
-import dotenv from 'dotenv';
-dotenv.config();
-if(process.env.MONGO_URI) import ("./config/db.js");
+import config from './config/config.js';
 import cookie from "cookie-parser";
 import session from "express-session";
 import mongoStore from "connect-mongo";
@@ -13,11 +11,10 @@ import ProductsRouter from "./routes/products.router.js";
 import CartsRouter from './routes/carts.router.js';
 import UserRouter from "./routes/user.router.js";
 import AuthRouter from "./routes/auth.router.js";
-import GithubRouter from './routes/github.router.js'
+import GithubRouter from './routes/github.router.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server up on port ${PORT}.`));
+app.listen(config.port, () => console.log(`Server up on port ${config.port}.`));
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname+'/views');
@@ -31,13 +28,13 @@ app.use(cookie());
 app.use(
   session({
     store: new mongoStore({
-      mongoUrl: process.env.MONGO_URI,
+      mongoUrl: config.mongoURI,
       options: {
         userNewUrlParser: true,
         useUnifiedTopology: true,
       },
     }),
-    secret: process.env.SECRET,
+    secret: config.secret,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 300000 },

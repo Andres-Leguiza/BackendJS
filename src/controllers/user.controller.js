@@ -1,10 +1,10 @@
-import * as UserService from "../services/user.service.js";
+import factory from '../services/factory.js';
 import * as Constants from './../constants/constants.js';
 
 export async function createUser(req, res) {
   try {
     const data = req.body;
-    const user = await UserService.createUser(data);
+    const user = await factory.user.createUser(data);
     delete user.password;
     res.status(201).json({
         user,
@@ -21,8 +21,13 @@ export async function createUser(req, res) {
 export async function getUser(req, res) {
   try {
     const { email } = req.params;
-    const user = await UserService.getUser(email);
-    if (user) {
+    const user = await factory.user.getUser(email);
+    if (!user) {
+      res.status(404).json({
+        error: Constants.USER_NOT_FOUND,
+        status: Constants.STATUS.FAILED
+      });
+    } else {
       delete user.password;
       res.json({
         user,
