@@ -1,24 +1,27 @@
-import * as AuthService from "../services/userDAOs/auth.service.js";
-import * as Constants from './../constants/constants.js';
+import * as JWTService from "../services/auth/jwt.service.js";
+import * as Constants from '../constants/constants.js';
+import UserDTO from "../services/userDAOs/userDTO.js";
+import { generateToken } from '../utils/jwt.util.js'
 
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const authenticated = await AuthService.login(email, password);
-    if (authenticated) {
-      req.session.authenticated = true;
-      res.json({
-        message: Constants.LOGIN_SUCCESS,
-        status: Constants.STATUS.SUCCESS
-      });
-    } else {
-      res.status(400).json({
+    const user = await JWTService.login(email, password);
+    if (!user) {
+      res.status(401).json({
         error: Constants.LOGIN_INVALID_USER_PASS_ERROR,
         status: Constants.STATUS.FAILED
       });
+    } else {
+      const token = generateToken(new UserDTO(user))
+      res.json({
+        message: Constants.LOGIN_SUCCESS,
+        token,
+        status: Constants.STATUS.SUCCESS
+      });
     }
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
       status: Constants.STATUS.FAILED
     });
@@ -41,7 +44,7 @@ export async function logout(req, res) {
       }
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
       error: error.message,
       status: Constants.STATUS.FAILED
     });

@@ -39,7 +39,7 @@ export async function getCart(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -55,7 +55,7 @@ export async function createCart(req, res){
             status: Constants.STATUS.SUCCESS
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -78,7 +78,7 @@ export async function addProductToCart(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -102,7 +102,7 @@ export async function updateProductQty(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -126,7 +126,7 @@ export async function updateCart(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -149,7 +149,7 @@ export async function deleteProduct(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -172,7 +172,7 @@ export async function deleteProducts(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });

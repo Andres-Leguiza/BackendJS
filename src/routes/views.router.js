@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { auth } from '../middlewares/auth.middleware.js';
+import { auth } from '../middlewares/authToken.middleware.js';
 import * as ViewsController from '../controllers/view.controller.js';
 import * as GithubController from '../controllers/github.controller.js';
 

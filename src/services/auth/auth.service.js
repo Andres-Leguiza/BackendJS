@@ -1,4 +1,4 @@
-import * as UserService from './user.service.js';
+import * as UserService from '../userDAOs/user.service.js';
 import { USER_NOT_REGISTERED, GITHUB_USER } from '../../constants/constants.js';
 import bcrypt from 'bcrypt';
 
@@ -13,6 +13,6 @@ export async function login(email, password) {
       return bcrypt.compareSync(password,user.password);
     }
   } catch (error) {
-    throw new Error(error.message);
+      throw new Error(error.message);
   }
 }

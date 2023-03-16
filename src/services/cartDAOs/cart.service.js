@@ -14,7 +14,7 @@ export async function getCart(cartId){
         const cart = await CartModel.findById({ _id: cartId }).populate("products.product").lean();
         return cart;
     } catch (error) {
-       throw new Error(error.message);
+        throw new Error(error.message);
     }
 }
 
@@ -41,7 +41,7 @@ export async function addProductToCart(cartId, productId){
         }
         return cart;
     } catch (error) {
-       throw new Error(error.message);
+        throw new Error(error.message);
     }
 }
 

@@ -8,7 +8,7 @@ const schema = new Schema(
     githubUser: { type: Boolean, default: false },
     age: { type: Number, min: 0, required: true },
     password: { type: String, required: true, minLength: 6},
-    role: { type: String, default: "usuario" }
+    role: { type: String, default: "user" }
   },
   {
     timestamps: true,

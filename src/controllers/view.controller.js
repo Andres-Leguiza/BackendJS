@@ -1,5 +1,5 @@
 import * as ProductService from '../services/productDAOs/product.service.js';
-import * as AuthService from '../services/userDAOs/auth.service.js'
+import * as AuthService from '../services/auth/auth.service.js'
 import * as UserService from "../services/userDAOs/user.service.js";
 import * as Constants from "../constants/constants.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';

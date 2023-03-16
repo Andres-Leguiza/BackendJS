@@ -2,7 +2,7 @@ import { ProductModel } from '../../models/product.model.js';
 
 export async function getProducts(query, options){
     try {
-        const products = await ProductModel.paginate(query, options);
+        const products = await ProductModel.paginate({...query, deletedAt: { $exists: false }}, options);
         return products;
     } catch (error) {
         throw new Error(error.message);
@@ -14,7 +14,7 @@ export async function getProduct(productId){
         const product = await ProductModel.findById(productId);
         return product;
     } catch (error) {
-       throw new Error(error.message);
+        throw new Error(error.message);
     }
 }
 
@@ -23,7 +23,7 @@ export async function addProduct(data){
         const product = await ProductModel.create(data);
         return product;
     } catch (error) {
-       throw new Error(error.message);
+        throw new Error(error.message);
     }
 }
 

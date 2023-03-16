@@ -11,7 +11,7 @@ export async function createUser(req, res) {
         status: Constants.STATUS.SUCCESS
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
         error: error.message,
         status: Constants.STATUS.FAILED
     });
@@ -35,7 +35,7 @@ export async function getUser(req, res) {
       });
     }
   } catch (error) {
-    res.status(400).json({
+    res.status(500).json({
         error: error.message,
         status: Constants.STATUS.FAILED
     });

@@ -58,7 +58,7 @@ export async function getProduct(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -74,7 +74,7 @@ export async function addProduct(req, res){
             status: Constants.STATUS.SUCCESS
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -98,7 +98,7 @@ export async function updateProduct(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });
@@ -122,7 +122,7 @@ export async function deleteProduct(req, res){
             });
         }
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: error.message,
             status: Constants.STATUS.FAILED
         });

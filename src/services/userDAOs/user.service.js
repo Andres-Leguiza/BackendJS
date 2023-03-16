@@ -13,7 +13,7 @@ export async function createUser(data) {
       return user;
     }
   } catch (error) {
-    throw new Error(error.message);
+      throw new Error(error.message);
   }
 }
 
@@ -22,6 +22,6 @@ export async function getUser(email) {
     const user = await UserModel.find({ email }).lean();
     return user[0];
   } catch (error) {
-    throw new Error(error.message);
+      throw new Error(error.message);
   }
 }
