@@ -178,3 +178,39 @@ export async function deleteProducts(req, res){
         });
     }
 }
+
+export async function purchase(req, res){
+    try {
+        const { cid } = req.params;
+        const cart = await factory.cart.getCart(cid);
+        if (!cart){
+            res.status(404).json({
+                message: Constants.CART_NOT_FOUND,
+                status: Constants.STATUS.FAILED
+            });
+        } else {
+            let amount = 0;
+            let unprocessedProducts = [];
+            cart.products.forEach( async cartItem => {
+                if(cartItem.quantity <= cartItem.product.stock){
+                    factory.product.updateProduct(cartItem.product.id, {"stock": cartItem.product.stock - cartItem.quantity});
+                    amount += cartItem.product.price;
+                    factory.cart.deleteProduct(cid, cartItem.product.id);
+                } else {
+                    unprocessedProducts.push(cartItem.product.id);
+                }
+            });
+            const ticket = await factory.ticket.createTicket({ "amount": amount, "purchaser": req.user.email});
+            res.json({
+                ticket,
+                unprocessedProducts,
+                status: Constants.STATUS.SUCCESS
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            error: error.message,
+            status: Constants.STATUS.FAILED
+        });
+    }
+}

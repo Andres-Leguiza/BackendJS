@@ -22,5 +22,7 @@ cartsRouter.put("/:cid/products/:pid", CartController.updateProductQty);
 cartsRouter.put("/:cid", CartController.updateCart);
 cartsRouter.delete("/:cid/products/:pid", CartController.deleteProduct);
 cartsRouter.delete("/:cid", CartController.deleteProducts);
+cartsRouter.get("/:cid/purchase", passport.authenticate('current', { session: false, failureRedirect: '/api/carts/unauthenticated' }), 
+                                            userRole, CartController.purchase);
 
 export default cartsRouter;

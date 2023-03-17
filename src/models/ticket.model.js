@@ -20,4 +20,4 @@ schema.pre('save', function (next) {
     next();
   });
 
-export const UserModel = model("Tickets", schema);
+export const TicketModel = model("Tickets", schema);
