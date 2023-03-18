@@ -24,6 +24,7 @@ export const PRODUCT_NOT_FOUND = "Product was not found.";
 export const PRODUCT_NOT_FOUND_OR_DELETED = "Product was not found or already deleted.";
 export const PRODUCT_DELETE_SUCCESS = "Product has been successfully deleted.";
 export const UNAUTHENTICATED = "User is not authenticated.";
+export const VALID_TOKEN = "Authorized Token."
 export const UNAUTHORIZED_USER = "You don't have access to this resource.";
 export const UNAUTHORIZED_OPERATION = "You don't have access to perform this operation.";
 export const MISSING_INVALID_TOKEN = "Missing or Invalid Token.";

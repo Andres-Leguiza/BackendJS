@@ -1,4 +1,3 @@
-
 import { STATUS, USER, ADMIN, UNAUTHORIZED_OPERATION } from '../constants/constants.js';
 
 export function adminRole(req, res, next) {

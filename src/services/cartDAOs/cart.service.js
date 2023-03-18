@@ -80,7 +80,7 @@ export async function deleteProduct(cartId, productId){
     try {
         const cart = await CartModel.findById(cartId);
         if (cart) {
-            cart._doc.products = cart._doc.products.filter(product => product.product.toString() !== productId.toString());
+            cart._doc.products = cart._doc.products.filter(cartItem => cartItem.product.toString() !== productId.toString());
             await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
         }
         return cart;

@@ -191,7 +191,7 @@ export async function purchase(req, res){
         } else {
             let amount = 0;
             let unprocessedProducts = [];
-            cart.products.forEach( async cartItem => {
+            cart.products.forEach( cartItem => {
                 if(cartItem.quantity <= cartItem.product.stock){
                     factory.product.updateProduct(cartItem.product.id, {"stock": cartItem.product.stock - cartItem.quantity});
                     amount += cartItem.product.price;

@@ -1,4 +1,3 @@
-
 import TicketDTO from './ticketDTO.js';
 
 export class TicketRepository {

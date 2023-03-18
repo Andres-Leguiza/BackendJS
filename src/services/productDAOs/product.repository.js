@@ -31,8 +31,6 @@ export class ProductRepository {
     }
 
     async deleteProduct(productId){
-        const deletedProduct = await this.dao.deleteProduct(productId);
-        const productDTO = deletedProduct ? new ProductDTO(deletedProduct._doc) : null;
-        return productDTO; 
+        await this.dao.deleteProduct(productId);
     }
 }

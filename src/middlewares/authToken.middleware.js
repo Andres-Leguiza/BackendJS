@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import config from '../config/config.js';
-import { STATUS, UNAUTHORIZED_USER } from '../constants/constants.js'
+import { STATUS, UNAUTHORIZED_USER } from '../constants/constants.js';
 
 export function apiAuth(req, res, next) {
   try {
@@ -21,7 +21,6 @@ export function apiAuth(req, res, next) {
   } catch (error) {
       throw new Error(error.message);
   }
-  
 }
 
 export function auth(req, res, next) {

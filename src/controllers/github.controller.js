@@ -1,4 +1,4 @@
-import * as Constants from '../constants/constants.js'
+import * as Constants from '../constants/constants.js';
 
 export async function renderFailure(req, res){
     try {

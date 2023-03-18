@@ -8,7 +8,7 @@ import ProductsRouter from "./routes/products.router.js";
 import CartsRouter from './routes/carts.router.js';
 import UserRouter from "./routes/user.router.js";
 import AuthRouter from "./routes/auth.router.js";
-import SessionRouter from "./routes/sessions.route.js"
+import SessionRouter from "./routes/sessions.route.js";
 import GithubRouter from './routes/github.router.js';
 
 const app = express();
@@ -22,7 +22,6 @@ app.use(express.static(__dirname+'/img'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.on("error", (error) => console.log(error));
-
 app.use(passport.initialize());
 
 app.use("/api/products", ProductsRouter);

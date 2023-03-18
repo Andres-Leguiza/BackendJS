@@ -33,6 +33,7 @@ export async function login(req, res) {
         if(email && password ){
         const authenticated = await AuthService.login(email, password);
         if (authenticated) {
+            req.headers("Authorization", "Bearer "+token)
             req.session.authenticated = true;
             req.session.userEmail = email;
             res.redirect(Constants.PRODUCTS);
