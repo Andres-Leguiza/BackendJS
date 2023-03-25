@@ -1,18 +1,15 @@
 import * as UserService from '../userDAOs/user.service.js';
-import { USER_NOT_REGISTERED, GITHUB_USER } from '../../constants/constants.js';
+import { ERRORS } from '../../constants/errors.js';
+import CustomError from '../../utils/customError.js';
 import bcrypt from 'bcrypt';
 
 export async function login(email, password) {
-  try {
-    const user = await UserService.getUser(email);
+    const user = await UserService.getUser(email);  
     if (!user) {
-      throw new Error(USER_NOT_REGISTERED);
+      throw CustomError.createError(ERRORS.USER_NOT_REGISTERED, email);
     } else if (user.githubUser){
-      throw new Error(GITHUB_USER);
+      throw CustomError.createError(ERRORS.GITHUB_USER, email);
     } else {
-      return bcrypt.compareSync(password,user.password);
+      return bcrypt.compareSync(password, user.password);
     }
-  } catch (error) {
-      throw new Error(error.message);
-  }
 }

@@ -1,7 +1,9 @@
+import { ERRORS } from '../constants/errors.js';
 import factory from '../services/factory.js';
-import * as Constants from './../constants/constants.js';
+import CustomError from '../utils/customError.js';
+import { STATUS, PRODUCT_DELETE_SUCCESS } from './../constants/constants.js';
 
-export async function getProducts(req, res){
+export async function getProducts(req, res, next){
     try {
         let options = {
             limit: req.query.limit ? req.query.limit : 10,
@@ -24,107 +26,82 @@ export async function getProducts(req, res){
 
         const products = await factory.product.getProducts(query, options);
         if (!products || products.length == 0){
-            res.status(404).json({
-                message: Constants.PRODUCTS_NOT_FOUND,
-                status: Constants.STATUS.FAILED
-            });
+            throw CustomError.createError(ERRORS.PRODUCTS_NOT_FOUND, req.user?.email);
         } else {
             res.json({
                 products,
-                status: Constants.STATUS.SUCCESS
+                status: STATUS.SUCCESS
             });
         }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            status: Constants.STATUS.FAILED
-        });
+        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
     }
 }
 
-export async function getProduct(req, res){
+export async function getProduct(req, res, next){
     try {
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
         if (!product){
-            res.status(404).json({
-                message: Constants.PRODUCT_NOT_FOUND,
-                status: Constants.STATUS.FAILED
-            });
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, req.user?.email);
         } else {
             res.json({
                 product,
-                status: Constants.STATUS.SUCCESS
+                status: STATUS.SUCCESS
             });
         }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            status: Constants.STATUS.FAILED
-        });
+        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
     }
 }
 
-export async function addProduct(req, res){
+export async function addProduct(req, res, next){
     try {
         const { body } = req;
-        const product = await factory.product.addProduct(body);
-        res.status(201).json({
-            product,
-            status: Constants.STATUS.SUCCESS
-        });
+        try {
+            const product = await factory.product.addProduct(body);
+            res.status(201).json({
+                product,
+                status: STATUS.SUCCESS
+            });
+        } catch (error) { throw CustomError.createError(ERRORS.INVALID_INPUT_PRODUCT, req.user?.email) }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            status: Constants.STATUS.FAILED
-        });
+        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
     }
 }
 
-export async function updateProduct(req, res){
+export async function updateProduct(req, res, next){
     try {
         const { pid } = req.params;
         const { body } = req;
         const product = await factory.product.updateProduct(pid, body);
         if (!product){
-            res.status(404).json({
-                message: Constants.PRODUCT_NOT_FOUND,
-                status: Constants.STATUS.FAILED
-            });
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, req.user?.email);
         } else {
             res.json({
                 product,
-                status: Constants.STATUS.SUCCESS
+                status: STATUS.SUCCESS
             });
         }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            status: Constants.STATUS.FAILED
-        });
+        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
     }
 }
 
-export async function deleteProduct(req, res){
+export async function deleteProduct(req, res, next){
     try {
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
         if (!product || product.deleted){
-            res.status(404).json({
-                message: Constants.PRODUCT_NOT_FOUND_OR_DELETED,
-                status: Constants.STATUS.FAILED
-            });
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, req.user?.email);
         } else {
             await factory.product.deleteProduct(pid);
             res.json({
-                message: Constants.PRODUCT_DELETE_SUCCESS,
-                status: Constants.STATUS.SUCCESS
+                message: PRODUCT_DELETE_SUCCESS,
+                status: STATUS.SUCCESS
             });
         }
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            status: Constants.STATUS.FAILED
-        });
+        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
     }
 }

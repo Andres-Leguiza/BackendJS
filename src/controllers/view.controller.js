@@ -1,8 +1,9 @@
 import * as ProductService from '../services/productDAOs/product.service.js';
 import * as AuthService from '../services/auth/auth.service.js'
 import * as UserService from "../services/userDAOs/user.service.js";
-import * as Constants from "../constants/constants.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
+import * as Constants from "../constants/constants.js";
+import { ERRORS } from '../constants/errors.js';
 
 export async function renderHome(req, res){
     try {
@@ -38,7 +39,7 @@ export async function login(req, res) {
             req.session.userEmail = email;
             res.redirect(Constants.PRODUCTS);
         } else {
-            res.render(Constants.LOGIN, { error: Constants.LOGIN_INVALID_USER_PASS_ERROR });
+            res.render(Constants.LOGIN, { error: ERRORS.LOGIN_INVALID_PASS.message });
         }
         } else res.render(Constants.LOGIN);
     } catch (error) {

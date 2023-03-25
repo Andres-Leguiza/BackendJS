@@ -6,7 +6,6 @@ import { ProductRepository } from './productDAOs/product.repository.js';
 import { CartRepository } from './cartDAOs/cart.repository.js';
 import { TicketRepository } from './ticketDAOs/ticket.repository.js';
 
-
 let factory;
 switch(config.persistence){
     case PERSISTENCE.MONGO:

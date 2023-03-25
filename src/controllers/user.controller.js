@@ -1,9 +1,11 @@
+import { ERRORS } from '../constants/errors.js';
 import factory from '../services/factory.js';
+import CustomError from '../utils/customError.js';
 import * as Constants from './../constants/constants.js';
 
-export async function createUser(req, res) {
+export async function createUser(req, res, next) {
+  const data = req.body;
   try {
-    const data = req.body;
     const user = await factory.user.createUser(data);
     delete user.password;
     res.status(201).json({
@@ -11,33 +13,24 @@ export async function createUser(req, res) {
         status: Constants.STATUS.SUCCESS
     });
   } catch (error) {
-    res.status(500).json({
-        error: error.message,
-        status: Constants.STATUS.FAILED
-    });
+    next(CustomError.createError(ERRORS.UNHANDLED_ERROR, data.email));
   }
 }
 
-export async function getUser(req, res) {
+export async function getUser(req, res, next) {
+  const { email } = req.params;
   try {
-    const { email } = req.params;
     const user = await factory.user.getUser(email);
-    if (!user) {
-      res.status(404).json({
-        error: Constants.USER_NOT_FOUND,
-        status: Constants.STATUS.FAILED
-      });
+    if(!user) {
+      throw CustomError.createError(ERRORS.USER_NOT_FOUND); 
     } else {
       delete user.password;
       res.json({
         user,
         status: Constants.STATUS.SUCCESS
       });
-    }
+    }  
   } catch (error) {
-    res.status(500).json({
-        error: error.message,
-        status: Constants.STATUS.FAILED
-    });
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, email)); else next(error);
   }
 }

@@ -1,21 +1,17 @@
-import { STATUS, USER, ADMIN, UNAUTHORIZED_OPERATION } from '../constants/constants.js';
+import { USER, ADMIN } from '../constants/constants.js';
+import { ERRORS } from '../constants/errors.js';
+import CustomError from './../utils/customError.js';
 
 export function adminRole(req, res, next) {
     const user = req.user;
     if (!user || user.role !== ADMIN) {
-        res.status(403).json({
-            message: UNAUTHORIZED_OPERATION,
-            status: STATUS.FAILED
-        });
+        throw CustomError.createError(ERRORS.UNAUTHORIZED_OPERATION, user.email);
     } else return next();
 }
 
 export function userRole(req, res, next) {
     const user = req.user;
     if (!user || user.role !== USER) {
-        res.status(403).json({
-            message: UNAUTHORIZED_OPERATION,
-            status: STATUS.FAILED
-        });
+        throw CustomError.createError(ERRORS.UNAUTHORIZED_OPERATION, user.email);
     } else return next();
 }
