@@ -11,6 +11,7 @@ import AuthRouter from "./routes/auth.router.js";
 import SessionRouter from "./routes/sessions.route.js";
 import GithubRouter from './routes/github.router.js';
 import MocksRouter from './routes/mocks.router.js';
+import LoggerTestRouter from './routes/loggerTest.router.js';
 import errorHandler from "./middlewares/errorHandler.middleware.js";
 
 const app = express();
@@ -33,5 +34,6 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/sessions", SessionRouter);
 app.use("/api/github", GithubRouter);
 app.use("/api/mocks", MocksRouter);
+app.use("/api/test", LoggerTestRouter);
 app.use("/views", ViewsRouter);
 app.use(errorHandler);

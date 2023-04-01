@@ -3,6 +3,7 @@ import * as AuthService from '../services/auth/auth.service.js'
 import * as UserService from "../services/userDAOs/user.service.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
 import * as Constants from "../constants/constants.js";
+import logger from '../utils/logger.js';
 import { ERRORS } from '../constants/errors.js';
 
 export async function renderHome(req, res){
@@ -14,6 +15,7 @@ export async function renderHome(req, res){
         const isAdmin = user.role === Constants.ADMIN;
         res.render(Constants.HOME, { ...products, user, isAdmin });
     } catch (error) {
+        logger.error(ERRORS.UNHANDLED_ERROR, error.message, user?.email);
         res.render(Constants.HOME, { error: error.message });
     }
 }
@@ -24,6 +26,7 @@ export async function getCart(req, res){
         const cart = await CartService.getCart(cid);
         res.render(Constants.CART, { ...cart });
     } catch (error) {
+        logger.error(ERRORS.UNHANDLED_ERROR, error.message);
         res.render(Constants.CART, { error: error.message });
     }
 }
@@ -39,10 +42,12 @@ export async function login(req, res) {
             req.session.userEmail = email;
             res.redirect(Constants.PRODUCTS);
         } else {
+            logger.warning(ERRORS.LOGIN_INVALID_PASS, null, email);
             res.render(Constants.LOGIN, { error: ERRORS.LOGIN_INVALID_PASS.message });
         }
         } else res.render(Constants.LOGIN);
     } catch (error) {
+        logger.error(ERRORS.UNHANDLED_ERROR, error.message);
         res.render(Constants.LOGIN, { error: error.message });
     }
 }
@@ -55,6 +60,7 @@ export async function logout(req, res) {
         } else res.render(Constants.LOGIN, { success: Constants.LOGOUT_SUCCESS });
         });
     } catch (error) {
+        logger.error(ERRORS.UNHANDLED_ERROR, error.message);
         res.render(Constants.LOGIN, { error: error.message });
     }
 }

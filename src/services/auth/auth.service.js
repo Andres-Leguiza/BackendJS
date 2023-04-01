@@ -6,9 +6,9 @@ import bcrypt from 'bcrypt';
 export async function login(email, password) {
     const user = await UserService.getUser(email);  
     if (!user) {
-      throw CustomError.createError(ERRORS.USER_NOT_REGISTERED, email);
+      throw CustomError.createError(ERRORS.USER_NOT_REGISTERED, null, email);
     } else if (user.githubUser){
-      throw CustomError.createError(ERRORS.GITHUB_USER, email);
+      throw CustomError.createError(ERRORS.GITHUB_USER, null, email);
     } else {
       return bcrypt.compareSync(password, user.password);
     }

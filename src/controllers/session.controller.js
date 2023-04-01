@@ -9,6 +9,6 @@ export function getCurrentUser(req, res) {
           user: req.user
     });
   } catch (error){
-      throw CustomError.createError(ERRORS.UNHANDLED_ERROR);
+    throw CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message);
   }
 }

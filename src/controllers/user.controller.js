@@ -13,7 +13,7 @@ export async function createUser(req, res, next) {
         status: Constants.STATUS.SUCCESS
     });
   } catch (error) {
-    next(CustomError.createError(ERRORS.UNHANDLED_ERROR, data.email));
+    next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, data.email));
   }
 }
 
@@ -22,7 +22,7 @@ export async function getUser(req, res, next) {
   try {
     const user = await factory.user.getUser(email);
     if(!user) {
-      throw CustomError.createError(ERRORS.USER_NOT_FOUND); 
+      throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email); 
     } else {
       delete user.password;
       res.json({
@@ -31,6 +31,6 @@ export async function getUser(req, res, next) {
       });
     }  
   } catch (error) {
-    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, email)); else next(error);
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
   }
 }

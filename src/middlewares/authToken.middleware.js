@@ -22,7 +22,7 @@ export function apiAuth(req, res, next) {
       }
     }
   } catch (error) {
-    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, email)); else next(error);
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message)); else next(error);
   }
 }
 

@@ -4,7 +4,7 @@ import { ERRORS } from '../constants/errors.js';
 
 faker.locale = 'en';
 
-export async function mockProducts(req, res){
+export async function mockProducts(req, res, next){
     let mockedProducts = [];
     try {
         for(let i = 0; i < 100; i++){
@@ -12,7 +12,7 @@ export async function mockProducts(req, res){
         }
         res.json(mockedProducts);
     } catch (error) {
-        next(CustomError.createError(ERRORS.UNHANDLED_ERROR));
+        next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message));
     }
 }
 

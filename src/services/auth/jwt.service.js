@@ -9,6 +9,6 @@ export async function login(email, password) {
     const user = await UserService.getUser(email);
     return user;
   } else {
-    throw CustomError.createError(ERRORS.LOGIN_INVALID_PASS, email);
+    throw CustomError.createError(ERRORS.LOGIN_INVALID_PASS, null, email);
   }
 }

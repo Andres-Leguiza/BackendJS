@@ -16,6 +16,6 @@ export async function login(req, res, next) {
       status: Constants.STATUS.SUCCESS
     });
   } catch (error) {
-    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, email)); else next(error);
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
   }
 }

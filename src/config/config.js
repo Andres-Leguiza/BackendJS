@@ -8,6 +8,7 @@ program.option("-p, --persistence <type>","Selected Persistence/DAO").parse();
 export default {
     port: process.env.PORT || 3000,
     persistence: program.opts().persistence || process.env.PERSISTENCE || 'MONGO',
+    node_env: process.env.NODE_ENV || 'dev',
     mongoURI: process.env.MONGO_URI,
     secret: process.env.SECRET,
     gitHubClientId: process.env.CLIENT_ID,

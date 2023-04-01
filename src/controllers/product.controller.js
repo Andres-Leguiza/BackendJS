@@ -26,7 +26,7 @@ export async function getProducts(req, res, next){
 
         const products = await factory.product.getProducts(query, options);
         if (!products || products.length == 0){
-            throw CustomError.createError(ERRORS.PRODUCTS_NOT_FOUND, req.user?.email);
+            throw CustomError.createError(ERRORS.PRODUCTS_NOT_FOUND, null, req.user?.email);
         } else {
             res.json({
                 products,
@@ -34,7 +34,7 @@ export async function getProducts(req, res, next){
             });
         }
     } catch (error) {
-        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
+        handleErrors(error, req, next);
     }
 }
 
@@ -43,7 +43,7 @@ export async function getProduct(req, res, next){
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
         if (!product){
-            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, req.user?.email);
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, null, req.user?.email);
         } else {
             res.json({
                 product,
@@ -51,7 +51,7 @@ export async function getProduct(req, res, next){
             });
         }
     } catch (error) {
-        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
+        handleErrors(error, req, next);
     }
 }
 
@@ -64,9 +64,9 @@ export async function addProduct(req, res, next){
                 product,
                 status: STATUS.SUCCESS
             });
-        } catch (error) { throw CustomError.createError(ERRORS.INVALID_INPUT_PRODUCT, req.user?.email) }
+        } catch (error) { throw CustomError.createError(ERRORS.INVALID_INPUT_PRODUCT, null, req.user?.email) }
     } catch (error) {
-        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
+        handleErrors(error, req, next);
     }
 }
 
@@ -76,7 +76,7 @@ export async function updateProduct(req, res, next){
         const { body } = req;
         const product = await factory.product.updateProduct(pid, body);
         if (!product){
-            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, req.user?.email);
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, null, req.user?.email);
         } else {
             res.json({
                 product,
@@ -84,7 +84,7 @@ export async function updateProduct(req, res, next){
             });
         }
     } catch (error) {
-        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
+        handleErrors(error, req, next);
     }
 }
 
@@ -93,7 +93,7 @@ export async function deleteProduct(req, res, next){
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
         if (!product || product.deleted){
-            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, req.user?.email);
+            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, null, req.user?.email);
         } else {
             await factory.product.deleteProduct(pid);
             res.json({
@@ -102,6 +102,10 @@ export async function deleteProduct(req, res, next){
             });
         }
     } catch (error) {
-        if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, req.user?.email)); else next(error);
+        handleErrors(error, req, next);
     }
+}
+
+function handleErrors(error, req, next){
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, req.user?.email)); else next(error);
 }

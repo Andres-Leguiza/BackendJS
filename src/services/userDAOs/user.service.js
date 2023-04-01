@@ -6,7 +6,7 @@ import CustomError from '../../utils/customError.js';
 export async function createUser(data) {
   const userRegistered = await getUser(data.email);
   if (userRegistered) {
-    throw CustomError.createError(ERRORS.EMAIL_ALREADY_USED);
+    throw CustomError.createError(ERRORS.EMAIL_ALREADY_USED, null, data.email);
   } else {
     data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
     const user = await UserModel.create(data);
