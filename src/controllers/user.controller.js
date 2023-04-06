@@ -7,7 +7,6 @@ export async function createUser(req, res, next) {
   const data = req.body;
   try {
     const user = await factory.user.createUser(data);
-    delete user.password;
     res.status(201).json({
         user,
         status: Constants.STATUS.SUCCESS
@@ -24,12 +23,49 @@ export async function getUser(req, res, next) {
     if(!user) {
       throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email); 
     } else {
-      delete user.password;
       res.json({
         user,
         status: Constants.STATUS.SUCCESS
       });
     }  
+  } catch (error) {
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
+  }
+}
+
+export async function updateUser(req, res, next){
+  const { email } = req.params;
+  const { body } = req;
+  try {
+    let user = await factory.user.getUser(email);
+    if(!user) {
+      throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email); 
+    } else {
+      user = await factory.user.updateUser(email, body);
+      res.json({
+        user,
+        status: Constants.STATUS.SUCCESS
+      });
+    }
+  } catch (error) {
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
+  }
+}
+
+export async function updatePassword(req, res, next){
+  const { email } = req.params;
+  const { body } = req;
+  try {
+    let user = await factory.user.getUser(email);
+    if(!user) {
+      throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email); 
+    } else {
+      user = await factory.user.updateUser(email, { password: body.password }, true);
+      res.json({
+        user,
+        status: Constants.STATUS.SUCCESS
+      });
+    }
   } catch (error) {
     if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
   }

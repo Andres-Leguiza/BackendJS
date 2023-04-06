@@ -6,5 +6,7 @@ const userRouter = new Router();
 
 userRouter.post("/", UserController.createUser);
 userRouter.get("/:email", apiAuth, UserController.getUser);
+userRouter.put("/:email", apiAuth, UserController.updateUser);
+userRouter.put("/password/:email", apiAuth, UserController.updatePassword);
 
 export default userRouter;

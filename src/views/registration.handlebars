@@ -7,13 +7,6 @@
     <div class="d-flex flex-column align-items-center justify-content-center">
         <h1 class="d-flex justify-content-center text-dark text-opacity-75 my-3">Registration</h1>
         <div class="container w-50 mt-5">
-        {{#if success}}
-        <div class="d-flex justify-content-center">
-            <div id="alert_success" class="alert alert-success">
-                <strong>{{success}}</strong>
-            </div>
-        </div>
-        {{/if}}
         {{#if error}}
         <div class="d-flex justify-content-center">
             <div id="alert_error" class="alert alert-danger">
@@ -44,7 +37,6 @@
 </div>
 <script>
     function hideMessage(){
-        if(document.getElementById("alert_success")) document.getElementById("alert_success").style.display = "none";
         if(document.getElementById("alert_error")) document.getElementById("alert_error").style.display = "none";
     }
 </script>

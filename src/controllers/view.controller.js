@@ -2,6 +2,7 @@ import * as ProductService from '../services/productDAOs/product.service.js';
 import * as AuthService from '../services/auth/auth.service.js'
 import * as UserService from "../services/userDAOs/user.service.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
+import factory from '../services/factory.js';
 import * as Constants from "../constants/constants.js";
 import logger from '../utils/logger.js';
 import { ERRORS } from '../constants/errors.js';
@@ -71,6 +72,27 @@ export async function register(req, res){
     } catch (error) {
         res.render(Constants.REGISTRATION, { error: error.message });
     }
+}
+
+export async function passwordRecovery(req, res){
+    const fromEmail = false;
+    const user = {email: "pepe.test@email.com"};
+    try {
+        res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user });
+    } catch (error) {
+        res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
+    }
+}
+
+export async function updatePassword(req, res){
+    const { email } = req.params;
+    const { newPassword } = req.body;
+    try {
+        const user = await factory.user.updateUser(email, { password: newPassword }, true);
+        res.render(Constants.PASSWORD_RECOVERY, { fromEmail: false, user });
+      } catch (error) {
+        res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
+      }
 }
 
 export async function createUser(req, res) {

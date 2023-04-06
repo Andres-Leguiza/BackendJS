@@ -16,4 +16,10 @@ export class UserRepository {
         const userDTO = user ? new UserDTO(user) : null;
         return userDTO; 
     }
+
+    async updateUser(email, data, updatePassword){
+        const user = await this.dao.updateUser(email, data, updatePassword);
+        const userDTO = user ? new UserDTO(user) : null;
+        return userDTO;
+    }
 }

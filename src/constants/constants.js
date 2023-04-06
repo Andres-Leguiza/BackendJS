@@ -8,6 +8,7 @@ export const LOGIN = "login";
 export const GITHUB_LOGIN_FAIL_VIEW = "/views/github/fail";
 export const LOGIN_VIEW = "/views/login";
 export const REGISTRATION = "registration";
+export const PASSWORD_RECOVERY = "passwordRecovery";
 export const PRODUCTS_VIEW = "/views/products";
 export const PRODUCTS = "products";
 export const CART = "cart";

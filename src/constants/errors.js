@@ -15,5 +15,6 @@ export const ERRORS = {
     USER_NOT_REGISTERED: { message: "User is not registered.", code: "ERR_013", status: 404 }, 
     GITHUB_USER: { message: "Email registered with Github, please sign in accordingly.", code: "ERR_014", status: 400 },
     EMAIL_ALREADY_USED: { message: "This email address is already in use.", code: "ERR_015", status: 400 },
-    GITHUB_ERROR_MESSAGE: { message: "Cannot log you in through GitHub at this moment.", code: "ERR_016", status: 500 }
+    PASSWORD_ALREADY_USED: { message: "You cannot use your current password.", code: "ERR_016", status: 400 },
+    GITHUB_ERROR_MESSAGE: { message: "Cannot log you in through GitHub at this moment.", code: "ERR_017", status: 500 }
 };
