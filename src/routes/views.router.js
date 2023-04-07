@@ -13,6 +13,7 @@ viewsRouter.get("/logout", ViewsController.logout);
 viewsRouter.get("/register", ViewsController.register);
 viewsRouter.post("/register", ViewsController.createUser);
 viewsRouter.get("/passwordRecovery", ViewsController.passwordRecovery);
+viewsRouter.post("/passwordRecovery", ViewsController.passwordRecoveryEmail);
 viewsRouter.post("/updatePassword/:email", ViewsController.updatePassword);
 viewsRouter.get('/github/fail', GithubController.renderFailure);
 

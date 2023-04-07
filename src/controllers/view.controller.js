@@ -3,6 +3,9 @@ import * as AuthService from '../services/auth/auth.service.js'
 import * as UserService from "../services/userDAOs/user.service.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
 import factory from '../services/factory.js';
+import config from '../config/config.js';
+import nodemailer from 'nodemailer';
+import { generateToken } from './../utils/jwt.util.js';
 import * as Constants from "../constants/constants.js";
 import logger from '../utils/logger.js';
 import { ERRORS } from '../constants/errors.js';
@@ -79,6 +82,35 @@ export async function passwordRecovery(req, res){
     const user = {email: "pepe.test@email.com"};
     try {
         res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user });
+    } catch (error) {
+        res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
+    }
+}
+
+export async function passwordRecoveryEmail(req, res){
+    const { email } = req.body;
+    const transport = nodemailer.createTransport({
+        service: "gmail",
+        port: 587,
+        auth: {
+            user: config.mailer_user,
+            pass: config.mailer_secret
+        }
+    });
+    try {
+        const user = await factory.user.getUser(email);
+        const token = generateToken(user);
+        let emailToSend = await transport.sendMail({
+            from: `eCommerce Coder <${config.mailer_user}>`,
+            to: `strato_andres@hotmail.com`,
+            subject: 'Password Recovery',
+            html: `<h2>Hi ${user.first_name} ${user.last_name},</h2>
+            <p>A request to recover your password has been detected. 
+            Please follow this link if you want to change your password:</p>
+            <button style="color: white; background-color: DodgerBlue; padding: 10px 5px; 
+            border: 2px solid; border-radius: 10px; cursor: pointer;">Change Password</button>`
+        });
+        res.render(Constants.PASSWORD_RECOVERY, { user });
     } catch (error) {
         res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
     }
