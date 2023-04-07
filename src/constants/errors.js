@@ -12,9 +12,10 @@ export const ERRORS = {
     UNAUTHORIZED_USER: { message: "You don't have access to this resource.", code: "ERR_010", status: 403 },
     UNAUTHORIZED_OPERATION: { message: "You don't have access to perform this operation.", code: "ERR_011", status: 403 },
     MISSING_INVALID_TOKEN: { message: "Missing or Invalid Token.", code: "ERR_012", status: 400 },
-    USER_NOT_REGISTERED: { message: "User is not registered.", code: "ERR_013", status: 404 }, 
-    GITHUB_USER: { message: "Email registered with Github, please sign in accordingly.", code: "ERR_014", status: 400 },
-    EMAIL_ALREADY_USED: { message: "This email address is already in use.", code: "ERR_015", status: 400 },
-    PASSWORD_ALREADY_USED: { message: "You cannot use your current password.", code: "ERR_016", status: 400 },
-    GITHUB_ERROR_MESSAGE: { message: "Cannot log you in through GitHub at this moment.", code: "ERR_017", status: 500 }
+    INVALID_EXPIRED_LINK_TOKEN: { message: "The Link is invalid or has already expired.", code: "ERR_013", status: 400 },
+    USER_NOT_REGISTERED: { message: "User is not registered.", code: "ERR_014", status: 404 }, 
+    GITHUB_USER: { message: "Email registered with Github, please sign in accordingly.", code: "ERR_015", status: 400 },
+    EMAIL_ALREADY_USED: { message: "This email address is already in use.", code: "ERR_016", status: 400 },
+    PASSWORD_ALREADY_USED: { message: "You cannot use your current password.", code: "ERR_017", status: 400 },
+    GITHUB_ERROR_MESSAGE: { message: "Cannot log you in through GitHub at this moment.", code: "ERR_018", status: 500 }
 };

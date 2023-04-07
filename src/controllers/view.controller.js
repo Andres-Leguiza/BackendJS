@@ -4,11 +4,13 @@ import * as UserService from "../services/userDAOs/user.service.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
 import factory from '../services/factory.js';
 import config from '../config/config.js';
+import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { generateToken } from './../utils/jwt.util.js';
 import * as Constants from "../constants/constants.js";
 import logger from '../utils/logger.js';
 import { ERRORS } from '../constants/errors.js';
+import CustomError from '../utils/customError.js';
 
 export async function renderHome(req, res){
     try {
@@ -78,12 +80,22 @@ export async function register(req, res){
 }
 
 export async function passwordRecovery(req, res){
-    const fromEmail = false;
-    const user = {email: "pepe.test@email.com"};
-    try {
-        res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user });
+    const { token } = req.query;
+    let fromEmail = false;
+    let isValid = false;
+    try{
+        if(token) {
+            try {
+                isValid = jwt.verify(token, config.secret);
+            } catch (error){
+                throw CustomError.createError(ERRORS.INVALID_EXPIRED_LINK_TOKEN);
+            }
+            fromEmail= true;
+            res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user: isValid.user });
+        }
     } catch (error) {
         res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
+        logWarning(error, req);
     }
 }
 
@@ -99,18 +111,25 @@ export async function passwordRecoveryEmail(req, res){
     });
     try {
         const user = await factory.user.getUser(email);
+        if(!user) throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email);
         const token = generateToken(user);
-        let emailToSend = await transport.sendMail({
+        await transport.sendMail({
             from: `eCommerce Coder <${config.mailer_user}>`,
-            to: `strato_andres@hotmail.com`,
+            to: `${email}`,
             subject: 'Password Recovery',
             html: `<h2>Hi ${user.first_name} ${user.last_name},</h2>
             <p>A request to recover your password has been detected. 
-            Please follow this link if you want to change your password:</p>
-            <button style="color: white; background-color: DodgerBlue; padding: 10px 5px; 
-            border: 2px solid; border-radius: 10px; cursor: pointer;">Change Password</button>`
+                Please follow this link if you want to change your password:
+            </p>
+            <a href="http://localhost:3000/views/passwordRecovery?token=${token}">
+                <button type="button" style="color: white; background-color: DodgerBlue; padding: 10px 5px; 
+                    border: 2px solid; border-radius: 10px; cursor: pointer;">
+                    Change Password
+                </button>
+            </a>`
         });
-        res.render(Constants.PASSWORD_RECOVERY, { user });
+        console.log(`http://localhost:3000/views/passwordRecovery?token=${token}`);
+        res.render(Constants.PASSWORD_RECOVERY, { emailSent: true, user });
     } catch (error) {
         res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
     }
@@ -120,10 +139,10 @@ export async function updatePassword(req, res){
     const { email } = req.params;
     const { newPassword } = req.body;
     try {
-        const user = await factory.user.updateUser(email, { password: newPassword }, true);
-        res.render(Constants.PASSWORD_RECOVERY, { fromEmail: false, user });
+        await factory.user.updateUser(email, { password: newPassword }, true);
+        res.render(Constants.LOGIN, { success: Constants.PASSWORD_UPDATE_SUCCESS });
       } catch (error) {
-        res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
+        res.render(Constants.PASSWORD_RECOVERY, { fromEmail: true, user: { email }, error: error.message });
       }
 }
 
@@ -137,4 +156,8 @@ export async function createUser(req, res) {
     } catch (error) {
       res.render(Constants.REGISTRATION, { error: error.message });
     }
+}
+
+function logWarning(error, req){
+    logger.warning(`Message: ${error.message} - Message Code: ${error.code} - Path: ${req.path} - Status Code: ${error.status} - User: ${error.user}`);
 }

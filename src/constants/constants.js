@@ -16,5 +16,6 @@ export const ADMIN = "admin";
 export const USER = "user";
 export const LOGIN_SUCCESS = "User was successfully authenticated.";
 export const LOGOUT_SUCCESS = "You successfully logged out.";
+export const PASSWORD_UPDATE_SUCCESS = "Your password was successfully updated.";
 export const PRODUCT_DELETE_SUCCESS = "Product has been successfully deleted.";
 export const VALID_TOKEN = "Authorized Token."
