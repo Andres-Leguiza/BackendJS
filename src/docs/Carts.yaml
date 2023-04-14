@@ -1,0 +1,232 @@
+paths:
+  /api/carts:
+    get:
+      summary: Retrieve all Carts.
+      tags:
+        - Carts
+      responses:
+          "200":
+            description: Cart List was successfully retrieved.
+          "404":
+            description: Cart List was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+    post:
+      summary: Create a Cart.
+      tags:
+        - Carts
+      requestBody:
+        $ref: "#/components/requestBodies/CreateCartRequest"
+      responses:
+        "201":
+          description: Cart was successfully created.
+        "400":
+          description: Bad Request.
+        "500":        
+          description: Unhandled Error. Internal Server Error.
+      
+  /api/carts/{cid}:
+    get:
+      summary: Retrieve a Cart by Id.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+      responses:
+          "200":
+            description: Cart was successfully retrieved.
+          "404":
+            description: Cart was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+    put:
+      summary: Update Products and/or Quantities from a Cart by Id.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+      requestBody:
+        $ref: "#/components/requestBodies/CreateCartRequest"
+      responses:
+        "200":
+          description: Cart was successfully updated.
+        "400":
+          description: Bad Request.
+        "404":
+          description: Cart was not found.
+        "500":        
+          description: Unhandled Error. Internal Server Error.
+    delete:
+      summary: Delete all Products from a Cart by Id.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+      responses:
+        "204":
+          description: Products were successfully removed from the Cart.
+        "404":
+          description: Cart was not found.
+        "500":        
+          description: Unhandled Error. Internal Server Error.
+
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Add a Product to a Cart by Id.
+      description:
+        If Product does not exist in the specified Cart, it is added with a Quantity of 1. 
+        If Product exists in the specified Cart, its Quantity is incremented by 1.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+        - $ref: "#/components/parameters/ProductId"
+      security:
+        - jwtTokenAuth: []
+      responses:
+          "200":
+            description: Product was successfully added to the Cart.
+          "401":
+            description: Unauthorized.
+          "403":
+            description: Forbidden. Unauthorized access to the resource.
+          "404":
+            description: Cart was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+    put:
+      summary: Update a Product Quantity from a Cart by Id.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+        - $ref: "#/components/parameters/ProductId"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateProductQtyRequest"
+      responses:
+          "200":
+            description: Product Quantity was successfully updated.
+          "404":
+            description: Cart was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+    delete:
+      summary: Delete a Product from a Cart by Id.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+        - $ref: "#/components/parameters/ProductId"
+      responses:
+          "200":
+            description: Product was successfully deleted from the Cart.
+          "404":
+            description: Cart was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+
+  /api/carts/{cid}/purchase:
+    get:
+      summary: Purchase an Order.
+      tags:
+        - Carts
+      parameters:
+        - $ref: "#/components/parameters/CartId"
+      security:
+        - jwtTokenAuth: []
+      responses:
+          "200":
+            description: Order was successfully created.
+          "401":
+            description: Unauthorized.
+          "403":
+            description: Forbidden. Unauthorized access to the resource.
+          "404":
+            description: Cart was not found.
+          "500":        
+            description: Unhandled Error. Internal Server Error.
+
+components:
+  parameters:
+    CartId:
+      in: path
+      name: cid
+      required: true
+      description: Cart Id.
+      schema:
+        type: string
+        example: 63c4d8f61fa0cec30d899e80
+    ProductId:
+      in: path
+      name: pid
+      required: true
+      description: Product Id.
+      schema:
+        type: string
+      example: 63c4ab31254ab1c8a90e5fe1
+
+  schemas:
+    Products:
+      type: object
+      description: List of Products.
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+      example:
+        products:
+          - product: 63c4ab31254ab1c8a90e5fe1
+            quantity: 2
+          - product: 63c4ab45254ab1c8a90e5fe4
+            quantity: 5
+      required:
+      - products
+
+    CartItem:
+      type: object
+      description: Cart Item.
+      properties:
+        product:
+          $ref: "#/components/schemas/Product"
+        quantity:
+          $ref: "#/components/schemas/Quantity"
+      required:
+      - product
+      - quantity
+    
+    ProductQty:
+      type: object
+      description: Product Qty object.
+      properties:
+        quantity:
+          $ref: "#/components/schemas/Quantity"
+
+    Product:
+      type: string
+      description: Product Id.
+      example: 63c4ab31254ab1c8a90e5fe1
+    Quantity:
+      type: number
+      description: Product Quantity.
+      example: 10
+
+  requestBodies:
+    CreateCartRequest:
+      description: Cart Creation Request Body.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Products"
+    UpdateProductQtyRequest:
+      description: Product Qty Update Request Body.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProductQty"
+
+  securitySchemes:
+      jwtTokenAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
