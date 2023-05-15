@@ -1,7 +1,7 @@
 import { ERRORS } from '../constants/errors.js';
 import factory from '../services/factory.js';
 import CustomError from '../utils/customError.js';
-import { STATUS, PRODUCT_DELETE_SUCCESS } from './../constants/constants.js';
+import { STATUS, ADMIN } from './../constants/constants.js';
 
 export async function getProducts(req, res, next){
     try {
@@ -29,7 +29,7 @@ export async function getProducts(req, res, next){
             throw CustomError.createError(ERRORS.PRODUCTS_NOT_FOUND, null, req.user?.email);
         } else {
             res.json({
-                products,
+                products: products.productList,
                 status: STATUS.SUCCESS
             });
         }
@@ -92,12 +92,10 @@ export async function deleteProduct(req, res, next){
     try {
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
-        if (!product || product.deleted){
-            throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, null, req.user?.email);
-        } else {
-            await factory.product.deleteProduct(pid);
-            res.status(204).send();
-        }
+        if (!product || product.deleted) throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, null, req.user?.email);
+        if (req.user.role !== ADMIN && product.owner !== req.user?.id) throw CustomError.createError(ERRORS.UNAUTHORIZED_DELETE, null, req.user?.email);
+        await factory.product.deleteProduct(pid);
+        res.status(204).send();
     } catch (error) {
         handleErrors(error, req, next);
     }

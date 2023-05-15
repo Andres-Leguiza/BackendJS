@@ -1,8 +1,8 @@
 import * as ProductController from '../controllers/product.controller.js';
-import { adminRole } from '../middlewares/roles.middleware.js';
+import { handleRoles } from '../middlewares/roles.middleware.js';
 import passport from '../utils/passport.util.js';
 import CustomError from '../utils/customError.js';
-import { PRODUCTS_UNAUTHENTICATED } from '../constants/constants.js';
+import { ADMIN, PREMIUM, PRODUCTS_UNAUTHENTICATED } from '../constants/constants.js';
 import { ERRORS } from '../constants/errors.js';
 import { Router }  from "express";
 
@@ -12,10 +12,10 @@ productsRouter.all("/unauthenticated", () => { throw CustomError.createError(ERR
 productsRouter.get("/", ProductController.getProducts);
 productsRouter.get("/:pid", ProductController.getProduct);
 productsRouter.post("/", passport.authenticate('current', { session: false, failureRedirect: PRODUCTS_UNAUTHENTICATED }), 
-                            adminRole, ProductController.addProduct);
+                            handleRoles([ADMIN, PREMIUM]), ProductController.addProduct);
 productsRouter.put("/:pid", passport.authenticate('current', { session: false, failureRedirect: PRODUCTS_UNAUTHENTICATED }), 
-                            adminRole, ProductController.updateProduct);
+                            handleRoles([ADMIN, PREMIUM]), ProductController.updateProduct);
 productsRouter.delete("/:pid", passport.authenticate('current', { session: false, failureRedirect: PRODUCTS_UNAUTHENTICATED }), 
-                            adminRole, ProductController.deleteProduct);
+                            handleRoles([ADMIN, PREMIUM]), ProductController.deleteProduct);
 
 export default productsRouter;

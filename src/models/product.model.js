@@ -11,7 +11,8 @@ const schema = new Schema(
         category: { type: String, required: true },
         thumbnails: [String],
         code: { type: String, unique: true, required: true },
-        stock: { type: Number, required: true }
+        stock: { type: Number, required: true },
+        owner: { type: String, default: "admin" }
     },
     {
         timestamps: true

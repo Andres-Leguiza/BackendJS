@@ -1,5 +1,5 @@
 import factory from '../services/factory.js';
-import { STATUS } from '../constants/constants.js';
+import { STATUS, ADMIN } from '../constants/constants.js';
 import CustomError from '../utils/customError.js';
 import { ERRORS } from '../constants/errors.js';
 
@@ -10,7 +10,7 @@ export async function getCarts(req, res, next){
             throw CustomError.createError(ERRORS.CARTS_NOT_FOUND, null, req.user?.email);
         } else {
             res.json({
-                carts,
+                carts: carts.cartList,
                 status: STATUS.SUCCESS
             });
         }
@@ -23,14 +23,11 @@ export async function getCart(req, res, next){
     try {
         const { cid } = req.params;
         const cart = await factory.cart.getCart(cid);
-        if (!cart){
-            throw CustomError.createError(ERRORS.CART_NOT_FOUND, null, req.user?.email);
-        } else {
-            res.json({
-                cart,
-                status: STATUS.SUCCESS
-            });
-        }
+        if (!cart) throw CustomError.createError(ERRORS.CART_NOT_FOUND, null, req.user?.email);
+        res.json({
+            cart,
+            status: STATUS.SUCCESS
+        });
     } catch (error) {
         handleErrors(error, req, next);
     }
@@ -52,6 +49,9 @@ export async function createCart(req, res, next){
 export async function addProductToCart(req, res, next){
     try {
         const { cid, pid } = req.params;
+        const product = await factory.product.getProduct(pid);
+        if(!product) throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND, null, req.user?.email);
+        if(product.owner !== ADMIN && product.owner === req.user?.id) throw CustomError.createError(ERRORS.PRODUCT_OWNERSHIP, null, req.user?.email);
         const cart = await factory.cart.addProductToCart(cid, pid);
         if (!cart){
             throw CustomError.createError(ERRORS.CART_NOT_FOUND, null, req.user?.email);
