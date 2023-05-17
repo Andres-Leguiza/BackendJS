@@ -14,7 +14,7 @@ export default class EmailSender {
     static sendPassRecoveryEmail(user, token){
         this.transport.sendMail({
             from: `eCommerce Coder <${config.mailer_user}>`,
-            to: `${email}`,
+            to: `${user.email}`,
             subject: 'Password Recovery',
             html: `<h2>Hi ${user.first_name} ${user.last_name},</h2>
             <p>A request to recover your password has been detected. 

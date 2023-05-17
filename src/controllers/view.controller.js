@@ -92,6 +92,7 @@ export async function passwordRecovery(req, res){
             fromEmail= true;
             res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user: isValid.user });
         }
+        res.render(Constants.PASSWORD_RECOVERY, { fromEmail });
     } catch (error) {
         res.render(Constants.PASSWORD_RECOVERY, { error: error.message });
         logWarning(error, req);
