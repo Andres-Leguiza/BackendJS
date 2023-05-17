@@ -36,6 +36,10 @@ export class UserRepository {
         return userDTO;
     }
 
+    async deleteUser(email){
+      await this.dao.deleteUser(email);  
+    }
+
     async deleteUsers(){
         await this.dao.deleteUsers();
     }

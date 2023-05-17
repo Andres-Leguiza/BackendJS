@@ -1,6 +1,8 @@
 import { UserModel } from '../../models/user.model.js';
+import { USER, PREMIUM } from '../../constants/constants.js';
 import { ERRORS } from '../../constants/errors.js';
 import bcrypt from 'bcrypt';
+import moment from 'moment';
 import CustomError from '../../utils/customError.js';
 import EmailSender from '../../utils/emailSender.js';
 
@@ -42,11 +44,15 @@ export async function updateLastConnection(email){
   await UserModel.findOneAndUpdate({ email }, { last_connection: Date.now() });
 }
 
+export async function deleteUser(email){
+  await UserModel.delete({ email });
+}
+
 export async function deleteUsers(){
-  const date = new Date();
-  date.setDate(date.getDate() - 2);
-  const users = await UserModel.find({ last_connection: { $lte: date }, deletedAt: { $exists: false } });
-  await UserModel.delete({ last_connection: { $lte: date } });
+  let date = moment().subtract(2, 'days').toDate();
+  const conditions = { last_connection: { $lte: date }, role: { $in: [ USER, PREMIUM ] } };
+  const users = await UserModel.find({ ...conditions, deletedAt: { $exists: false } });
+  await UserModel.delete({ ...conditions });
   users.forEach(user => sendEmail(user._doc));
   return users;
 }

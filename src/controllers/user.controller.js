@@ -105,6 +105,16 @@ export async function updatePassword(req, res, next){
   }
 }
 
+export async function deleteUser(req, res, next){
+  const { email } = req.params;
+  try{
+    await factory.user.deleteUser(email);
+    res.status(204).send();
+  } catch (error) {
+    if(!error.code) next(CustomError.createError(ERRORS.UNHANDLED_ERROR, error.message, email)); else next(error);
+  }
+}
+
 export async function deleteUsers(req, res, next){
   try{
     await factory.user.deleteUsers();

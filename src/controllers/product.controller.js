@@ -1,7 +1,8 @@
 import { ERRORS } from '../constants/errors.js';
 import factory from '../services/factory.js';
 import CustomError from '../utils/customError.js';
-import { STATUS, ADMIN } from './../constants/constants.js';
+import EmailSender from '../utils/emailSender.js';
+import { STATUS, ADMIN, PREMIUM } from './../constants/constants.js';
 
 export async function getProducts(req, res, next){
     try {
@@ -93,8 +94,12 @@ export async function deleteProduct(req, res, next){
         const { pid } = req.params;
         const product = await factory.product.getProduct(pid);
         if (!product || product.deleted) throw CustomError.createError(ERRORS.PRODUCT_NOT_FOUND_OR_DELETED, null, req.user?.email);
-        if (req.user.role !== ADMIN && product.owner !== req.user?.id) throw CustomError.createError(ERRORS.UNAUTHORIZED_DELETE, null, req.user?.email);
+        if (req.user.role === PREMIUM && product.owner !== req.user?.id) throw CustomError.createError(ERRORS.UNAUTHORIZED_DELETE, null, req.user?.email);
         await factory.product.deleteProduct(pid);
+
+        let user = req.user;
+        if (req.user.role === ADMIN) user = await factory.user.getUserById(product.owner);
+        EmailSender.sendProductDeletionEmail(user);
         res.status(204).send();
     } catch (error) {
         handleErrors(error, req, next);

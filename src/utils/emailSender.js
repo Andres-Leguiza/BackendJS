@@ -33,9 +33,19 @@ export default class EmailSender {
         this.transport.sendMail({
             from: `eCommerce Coder <${config.mailer_user}>`,
             to: `${user.email}`,
-            subject: 'Password Recovery',
+            subject: 'Account Inactivity',
             html: `<h2>Hi ${user.first_name} ${user.last_name},</h2>
             <p>Your account has been deleted due to inactivity.</p>`
+        });
+    }
+
+    static sendProductDeletionEmail(user){
+        this.transport.sendMail({
+            from: `eCommerce Coder <${config.mailer_user}>`,
+            to: `${user.email}`,
+            subject: 'Product Deleted',
+            html: `<h2>Hi ${user.first_name} ${user.last_name},</h2>
+            <p>Your PREMIUM product has been deleted.</p>`
         });
     }
 }
