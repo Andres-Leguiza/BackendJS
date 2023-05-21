@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/server.js -p MONGO",
     "dev": "nodemon --inspect ./src/server.js -p MONGO"
   },
   "keywords": [],
