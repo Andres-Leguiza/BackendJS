@@ -13,6 +13,7 @@ export default {
     secret: process.env.SECRET,
     mailer_user: process.env.MAILER_USER,
     mailer_secret: process.env.MAILER_SECRET,
+    stripeSecret: process.env.STRIPE_SECRET,
     gitHubClientId: process.env.CLIENT_ID,
     gitHubClientSecret: process.env.CLIENT_SECRET,
     gitHubCallbackURL: process.env.CALLBACK_URL
