@@ -1,5 +1,5 @@
 import * as ProductService from '../services/productDAOs/product.service.js';
-import * as AuthService from '../services/auth/auth.service.js'
+import * as JWTService from '../services/auth/jwt.service.js';
 import * as UserService from "../services/userDAOs/user.service.js";
 import * as CartService from '../services/cartDAOs/cart.service.js';
 import factory from '../services/factory.js';
@@ -10,13 +10,13 @@ import logger from '../utils/logger.js';
 import { ERRORS } from '../constants/errors.js';
 import CustomError from '../utils/customError.js';
 import EmailSender from './../utils/emailSender.js';
+import UserDTO from '../services/userDAOs/userDTO.js';
 
 export async function renderHome(req, res){
     try {
         const page = req.query.page ? req.query.page : 1;
         const products = await ProductService.getProducts({},{limit: 10, page: page, lean: true});
-        const user = await UserService.getUser(req.session.userEmail);
-        delete user.password;
+        const user = req.user;
         const isAdmin = user.role === Constants.ADMIN;
         res.render(Constants.HOME, { ...products, user, isAdmin });
     } catch (error) {
@@ -40,11 +40,10 @@ export async function login(req, res) {
     try {
         const { email, password } = req.body;
         if(email && password ){
-        const authenticated = await AuthService.login(email, password);
-        if (authenticated) {
-            req.headers("Authorization", "Bearer "+token)
-            req.session.authenticated = true;
-            req.session.userEmail = email;
+        const user = await JWTService.login(email, password);
+        if (user) {
+            const token = generateToken(new UserDTO(user));
+            req.session.authToken = token;
             res.redirect(Constants.PRODUCTS);
         } else {
             logger.warning(ERRORS.LOGIN_INVALID_PASS, null, email);
@@ -59,11 +58,9 @@ export async function login(req, res) {
 
 export async function logout(req, res) {
     try {
-        req.session.destroy((error) => {
-        if (error) {
-            res.render(Constants.LOGIN, { error: error.message });
-        } else res.render(Constants.LOGIN, { success: Constants.LOGOUT_SUCCESS });
-        });
+        delete req.headers['authorization'];
+        delete req.session.authToken;
+        res.render(Constants.LOGIN, { success: Constants.LOGOUT_SUCCESS });
     } catch (error) {
         logger.error(ERRORS.UNHANDLED_ERROR, error.message);
         res.render(Constants.LOGIN, { error: error.message });

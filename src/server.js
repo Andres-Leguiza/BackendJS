@@ -3,6 +3,7 @@ import __dirname from './utils.js';
 import handlebars from 'express-handlebars';
 import config from './config/config.js';
 import passport from 'passport';
+import session from 'express-session';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 import { SwaggerTheme } from 'swagger-themes';
@@ -41,15 +42,21 @@ const specs = swaggerJSDoc(swaggerOptions);
 app.use('/dark/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs, { customCss: darkStyle }));
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
-app.engine('handlebars', handlebars.engine());
+app.engine('hbs', handlebars.engine());
 app.set('views', __dirname+'/views');
-app.set('view engine','handlebars');
+app.set('view engine','hbs');
 app.use(express.static(__dirname+'/public'));
 app.use(express.static(__dirname+'/img'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.on("error", (error) => console.log(error));
+app.use(session({
+    secret: config.secret,
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/products", ProductsRouter);
 app.use("/api/carts", CartsRouter);

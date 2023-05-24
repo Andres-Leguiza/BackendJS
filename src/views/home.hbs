@@ -11,6 +11,13 @@
         </div>
     </div>
 </nav>
+{{#if error}}
+    <div class="d-flex justify-content-center">
+        <div id="alert_error" class="alert alert-danger">
+            <strong>{{error}}</strong>
+        </div>
+    </div>
+{{/if}}
 <div class="container">
     {{#if user}}
       <div class="ms-5">
