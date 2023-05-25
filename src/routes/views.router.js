@@ -7,6 +7,8 @@ const viewsRouter = Router();
 
 viewsRouter.get("/products", auth, ViewsController.renderHome);
 viewsRouter.get("/carts/:cid", auth, ViewsController.getCart);
+viewsRouter.post("/carts/:cid/products/:pid", auth, ViewsController.addProductToCart);
+viewsRouter.get("/carts/:cid/purchase", auth, ViewsController.purchase);
 viewsRouter.get("/login", ViewsController.login);
 viewsRouter.post("/login", ViewsController.login);
 viewsRouter.get("/logout", ViewsController.logout);

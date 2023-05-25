@@ -10,9 +10,9 @@ passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
   
-passport.deserializeUser(function (_id, done) {
+passport.deserializeUser(async function (_id, done) {
     console.log("Deserializing");
-    UserModel.findById(_id, function (err, user) {
+    await UserModel.findById(_id, function (err, user) {
         done(err, user);
     });
 });

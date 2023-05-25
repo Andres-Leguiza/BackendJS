@@ -17,6 +17,7 @@ export const CART = "cart";
 export const ADMIN = "admin";
 export const PREMIUM = "premium";
 export const USER = "user";
+export const PURCHASE_SUCCESS = "Your order was successfully created.";
 export const LOGIN_SUCCESS = "User was successfully authenticated.";
 export const LOGOUT_SUCCESS = "You successfully logged out.";
 export const PASSWORD_UPDATE_SUCCESS = "Your password was successfully updated.";

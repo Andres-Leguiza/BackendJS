@@ -11,8 +11,8 @@ export async function getUsers() {
 }
 
 export async function createUser(data) {
-  const userRegistered = await getUser(data.email);
-  if (userRegistered) {
+  const userAlreadyRegistered = await getUser(data.email);
+  if (userAlreadyRegistered) {
     throw CustomError.createError(ERRORS.EMAIL_ALREADY_USED, null, data.email);
   } else {
     data.password = bcrypt.hashSync(data.password, bcrypt.genSaltSync(10));
@@ -65,6 +65,6 @@ async function validPassword(email, newPassword){
   return true;
 }
 
-async function sendEmail(user){
+function sendEmail(user){
   EmailSender.sendUserDeletionEmail(user);
 }

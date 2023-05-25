@@ -122,15 +122,19 @@ export async function purchase(req, res, next){
         if (!cart) throw CustomError.createError(ERRORS.CART_NOT_FOUND, null, req.user?.email);
         let amount = 0;
         let unprocessedProducts = [];
-        cart.products.forEach( cartItem => {
+        cart.products.forEach( async cartItem => {
             if(cartItem.quantity <= cartItem.product.stock){
-                factory.product.updateProduct(cartItem.product.id, {"stock": cartItem.product.stock - cartItem.quantity});
+                await factory.product.updateProduct(cartItem.product.id, {"stock": cartItem.product.stock - cartItem.quantity});
                 amount += cartItem.product.price;
-                factory.cart.deleteProduct(cid, cartItem.product.id);
             } else {
-                unprocessedProducts.push(cartItem.product.id);
+                unprocessedProducts.push({ product: cartItem.product.id, quantity: cartItem.quantity });
             }
         });
+        
+        if(unprocessedProducts.length == 0){
+            await factory.cart.deleteProducts(cid);
+        } else await factory.cart.updateCart(cid, { products: unprocessedProducts });
+
         const ticket = await factory.ticket.createTicket({ "amount": amount, "purchaser": req.user.email});
         res.json({
             ticket,

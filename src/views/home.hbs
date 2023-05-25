@@ -1,13 +1,17 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-between">
         <a class="navbar-brand" href="/views/products">eCommerce</a>
-        <div class="btn-group">
-            <button class="btn border-0 me-5" type="button" id="defaultDropdown" data-bs-toggle="dropdown" 
-                    data-bs-auto-close="true" aria-expanded="false">
-                <img src="/User.png" alt="User" width="48"></button>
-            <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
-                <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
-            </ul>
+        <div class="d-flex align-items-center">
+            <div><a class="text-center" href="/views/carts/{{user.cart}}" role="button">
+                <img src="/cart.png" alt="Cart" width="48"></a></div>
+            <div class="btn-group ms-3">
+                <button class="btn border-0 me-5" type="button" id="defaultDropdown" data-bs-toggle="dropdown" 
+                        data-bs-auto-close="true" aria-expanded="false">
+                    <img src="/User.png" alt="User" width="48"></button>
+                <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
+                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>
@@ -32,8 +36,8 @@
     {{/if}}
     <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">Products List:</h1>
     <div id="productsContainer" class="d-flex flex-wrap justify-content-evenly mt-5">
-        {{#if docs.length}}
-        {{#each docs}}
+        {{#if productList.length}}
+        {{#each productList}}
         <div class="card ms-2 my-2 ">
             <h5 class="card-header d-flex justify-content-center">{{title}}</h5>
             <div class="card-body">
@@ -44,7 +48,9 @@
                 <p>Stock: {{stock}}</p>
             </div>
             <div>
-                <button type="button" class="btn btn-sm btn-light border-top w-100">Add to Cart</button>
+                <form action="/views/carts/{{../user.cart}}/products/{{id}}" method="post">
+                    <button type="submit" class="btn btn-sm btn-light border-top w-100">Add to Cart</button>
+                </form>
             </div>
             <input type="hidden" value="productId_{{id}}" />
         </div>

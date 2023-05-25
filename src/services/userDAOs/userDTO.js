@@ -6,6 +6,7 @@ export default class UserDTO {
         this.email = user.email;
         this.githubUser = user.githubUser;
         this.age = user.age;
+        this.cart = user.cart;
         this.role = user.role;
         this.createdAt = user.createdAt;
         this.updatedAt = user.updatedAt;

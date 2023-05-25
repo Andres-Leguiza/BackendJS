@@ -14,40 +14,51 @@
 <div class="container">
     <h1 class="d-flex justify-content-center mt-3">Shopping Cart:</h1>
     <div id="productsContainer" class="d-flex flex-column mt-5">
-        {{#if products.length}}
-        {{#each products}}
-        <div class="card flex-row ms-2 my-2">
-            <h5 class="card-header fs-6 text-center d-flex align-items-center border-bottom-0">{{product.title}}</h5>
-            <table class="table table-striped table-borderless table-sm table-hover text-center m-0">
-                <thead>
-                    <tr class="table-secondary border-bottom border-secondary">
-                        <th>Description</th>
-                        <th>Price</th>
-                        <th>Code</th>
-                        <th>Category</th>
-                        <th>Stock</th>
-                    </tr> 
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{product.description}}</td>
-                        <td>${{product.price}}</td>
-                        <td>{{product.code}}</td>
-                        <td>{{product.category}}</td>
-                        <td>{{product.stock}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="card-footer d-flex flex-column justify-content-center align-items-center border-top-0">
-                <p class="fw-bold my-0">Quantity</p>
-                <p class="my-0">{{quantity}}</p>
+        {{#if success}}
+            <div class="d-flex justify-content-center">
+                <div id="alert_success" class="alert alert-success">
+                    <strong>{{success}}</strong>
+                </div>
             </div>
-            <input type="hidden" value="productId_{{product._id}}" />
-        </div>
-        {{/each}}
         {{else}}
-            <h2 class="d-flex justify-content-center mt-3">Your shopping cart is empty.</h2>
+            {{#if products.length}}
+                {{#each products}}
+                <div class="card flex-row ms-2 my-2">
+                    <h5 class="card-header fs-6 text-center d-flex align-items-center border-bottom-0">{{product.title}}</h5>
+                    <table class="table table-striped table-borderless table-sm table-hover text-center m-0">
+                        <thead>
+                            <tr class="table-secondary border-bottom border-secondary">
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Code</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                            </tr> 
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{product.description}}</td>
+                                <td>${{product.price}}</td>
+                                <td>{{product.code}}</td>
+                                <td>{{product.category}}</td>
+                                <td>{{product.stock}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="card-footer d-flex flex-column justify-content-center align-items-center border-top-0">
+                        <p class="fw-bold my-0">Quantity</p>
+                        <p class="my-0">{{quantity}}</p>
+                    </div>
+                    <input type="hidden" value="productId_{{product.id}}" />
+                </div>
+                {{/each}}
+                <form class="d-flex justify-content-end mt-3" action="/views/carts/{{id}}/purchase" method="get">
+                    <button type="submit" class="btn btn-sm btn-light border fs-6 fw-bold">Purchase Order</button>
+                </form>
+            {{else}}
+                <h2 class="d-flex justify-content-center mt-3">Your shopping cart is empty.</h2>
+            {{/if}}
         {{/if}}
-        <input type="hidden" value="cartId_{{_id}}" />
+        <input type="hidden" value="cartId_{{id}}" />
     </div>
 </div>

@@ -2,7 +2,7 @@ import ProductDTO from "./productDTO.js";
 
 export default class ProductListDTO {
     constructor(products){
-        this.productList = products.docs.map(product => new ProductDTO(product._doc));
+        this.productList = products.docs.map(product => new ProductDTO(product));
         this.totalDocs = products.totalDocs;
         this.limit = products.limit;
         this.totalPages = products.totalPages;

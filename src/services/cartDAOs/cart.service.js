@@ -22,7 +22,7 @@ export async function addProductToCart(cartId, productId){
         if (productToUpdate){
             productToUpdate.quantity = productToUpdate.quantity + 1;
         } else {
-            cart._doc.products.push({ product: productId });
+            cart._doc.products.push({ product: productId, quantity: 1 });
         }
         await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
     }
@@ -55,7 +55,7 @@ export async function updateCart(cartId, data){
 export async function deleteProduct(cartId, productId){
     const cart = await CartModel.findById(cartId);
     if (cart) {
-        cart._doc.products = cart._doc.products.filter(cartItem => cartItem.product.toString() !== productId.toString());
+        cart._doc.products = await cart._doc.products.filter(cartItem => cartItem.product.toString() !== productId.toString());
         await CartModel.findByIdAndUpdate(cartId, cart, { new: true });
     }
     return cart;
