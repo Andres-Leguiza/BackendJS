@@ -7,8 +7,8 @@ import { STATUS, ADMIN, PREMIUM } from './../constants/constants.js';
 export async function getProducts(req, res, next){
     try {
         let options = {
-            limit: req.query.limit ? req.query.limit : 10,
-            page: req.query.page ? req.query.page : 1,
+            limit: req.query.limit || 10,
+            page: req.query.page || 1,
             sort: req.query.sort && { price: req.query.sort }
         }
 

@@ -12,7 +12,7 @@ import UserDTO from '../services/userDAOs/userDTO.js';
 
 export async function renderHome(req, res){
     try {
-        const page = req.query.page ? req.query.page : 1;
+        const page = req.query.page || 1;
         const products = await factory.product.getProducts({},{limit: 10, page: page, lean: true});
         const user = req.user;
         const isAdmin = user.role === Constants.ADMIN;

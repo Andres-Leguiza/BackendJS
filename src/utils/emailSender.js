@@ -20,7 +20,7 @@ export default class EmailSender {
             <p>A request to recover your password has been detected. 
                 Please follow this link if you want to change your password:
             </p>
-            <a href="http://localhost:3000/views/passwordRecovery?token=${token}">
+            <a href="${config.appDomain}/views/passwordRecovery?token=${token}">
                 <button type="button" style="color: white; background-color: DodgerBlue; padding: 10px 5px; 
                     border: 2px solid; border-radius: 10px; cursor: pointer;">
                     Change Password

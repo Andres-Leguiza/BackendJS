@@ -16,5 +16,6 @@ export default {
     stripeSecret: process.env.STRIPE_SECRET,
     gitHubClientId: process.env.CLIENT_ID,
     gitHubClientSecret: process.env.CLIENT_SECRET,
-    gitHubCallbackURL: process.env.CALLBACK_URL
+    gitHubCallbackURL: process.env.CALLBACK_URL,
+    appDomain: process.env.APP_DOMAIN
 }
