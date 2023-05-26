@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { generateToken } from './../utils/jwt.util.js';
 import * as Constants from "../constants/constants.js";
 import logger from '../utils/logger.js';
+import config from '../config/config.js';
 import { ERRORS } from '../constants/errors.js';
 import CustomError from '../utils/customError.js';
 import EmailSender from './../utils/emailSender.js';
@@ -55,10 +56,12 @@ export async function purchase(req, res){
         if (!cart) throw CustomError.createError(ERRORS.CART_NOT_FOUND, null, req.user?.email);
         let amount = 0;
         let unprocessedProducts = [];
+        let isItemProccesed = false;
         cart.products.forEach( async cartItem => {
             if(cartItem.quantity <= cartItem.product.stock){
                 await factory.product.updateProduct(cartItem.product.id, {"stock": cartItem.product.stock - cartItem.quantity});
                 amount += cartItem.product.price;
+                isItemProccesed = true;
             } else {
                 unprocessedProducts.push({ product: cartItem.product.id, quantity: cartItem.quantity });
             }
@@ -68,8 +71,11 @@ export async function purchase(req, res){
             await factory.cart.deleteProducts(cid);
         } else await factory.cart.updateCart(cid, { products: unprocessedProducts });
 
-        const ticket = await factory.ticket.createTicket({ "amount": amount, "purchaser": req.user.email});
-        res.render(Constants.CART, { success: Constants.PURCHASE_SUCCESS, ticket, unprocessedProducts });
+        if(isItemProccesed) {
+            const ticket = await factory.ticket.createTicket({ "amount": amount, "purchaser": req.user.email});
+            res.render(Constants.CART, { success: Constants.PURCHASE_SUCCESS, purchase: true, ticket, unprocessedProducts });
+        } else res.render(Constants.CART, { warning: Constants.NO_PRODUCTS_PROCESSED, purchase: true, unprocessedProducts });
+        
     } catch (error) {
         logError(error, req);
         res.render(Constants.CART, { error: error.message });
@@ -132,8 +138,7 @@ export async function passwordRecovery(req, res){
             }
             fromEmail= true;
             res.render(Constants.PASSWORD_RECOVERY, { fromEmail, user: isValid.user });
-        }
-        res.render(Constants.PASSWORD_RECOVERY, { fromEmail });
+        } else res.render(Constants.PASSWORD_RECOVERY, { fromEmail });
     } catch (error) {
         logWarning(error, req);
         res.render(Constants.PASSWORD_RECOVERY, { error: error.message });

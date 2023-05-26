@@ -14,12 +14,35 @@
 <div class="container">
     <h1 class="d-flex justify-content-center mt-3">Shopping Cart:</h1>
     <div id="productsContainer" class="d-flex flex-column mt-5">
-        {{#if success}}
-            <div class="d-flex justify-content-center">
-                <div id="alert_success" class="alert alert-success">
-                    <strong>{{success}}</strong>
+        {{#if purchase}}
+            {{#if success}}
+                <div class="d-flex justify-content-center">
+                    <div id="alert_success" class="alert alert-success">
+                        <strong>{{success}}</strong>
+                    </div>
                 </div>
-            </div>
+                <div class="d-flex flex-column align-items-center mt-3">
+                    <h3>Your ticket details:</h3>
+                    <ul class="list-group mt-2">
+                        <li class="list-group-item">Order Number: {{ticket.code}}</li>
+                        <li class="list-group-item">Purchase Date: {{ticket.purchase_date}}</li>
+                        <li class="list-group-item">Amount: ${{ticket.amount}}</li>
+                        <li class="list-group-item">Purchaser Email: {{ticket.purchaser}}</li>
+                    </ul>
+                </div>
+            {{/if}}
+            {{#if warning}}
+            <div class="d-flex justify-content-center">
+                    <div id="alert_warning" class="alert alert-warning">
+                        <strong>{{warning}}</strong>
+                    </div>
+                </div>
+            {{/if}}
+            {{#if unprocessedProducts.length}}
+                <div class="d-flex flex-column align-items-center mt-5">
+                    <h3>Your cart has Unprocessed Products, due to missing Stock.</h3>
+                </div>
+            {{/if}}
         {{else}}
             {{#if products.length}}
                 {{#each products}}
