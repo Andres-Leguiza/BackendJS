@@ -7,7 +7,7 @@
                         data-bs-auto-close="true" aria-expanded="false">
                     <img src="/User.png" alt="User" width="48"></button>
                 <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
-                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
+                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="/views/logout" role="button">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -31,7 +31,7 @@
     {{/if}}
     <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">User Management</h1>
     <div id="usersContainer" class="d-flex mt-5 mb-5">
-        <form class="d-flex align-items-end" action="userSearch" method="get">
+        <form class="d-flex align-items-end" action="/views/userSearch" method="get">
             <label for="email" class="fs-6 fw-bold me-2">Find a user by Email: </label>
             <input type="email" class="border rounded px-2" size="30" placeholder="user.email@test.com" name="email" id="email" autocomplete="username" required="true">
             <button class="btn btn-sm btn-outline-dark border-1 ms-2" type="submit">Search</button>
@@ -50,14 +50,14 @@
             </div>
             <hr class="my-1">
             <div>
-                <form action="changeRole" method="get">
+                <form action="/views/changeRole" method="get">
                     <input type="hidden" name="userId" value="{{searchUser.id}}">
                     <button class="btn btn-sm btn-warning border-top w-100" type="submit">Change Role</button>
                 </form>
             </div>
             <hr class="my-1">
             <div>
-                <form action="userDelete" method="get">
+                <form action="/views/userDelete" method="get">
                     <input type="hidden" name="email" value="{{searchUser.email}}">
                     <button class="btn btn-sm btn-danger border-top w-100" onclick="return confirm('Do you want to delete the user?')" type="submit">Delete</button>
                 </form>

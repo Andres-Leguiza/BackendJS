@@ -11,9 +11,9 @@
                     <img src="/User.png" alt="User" width="48"></button>
                 <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
                     {{#if isAdmin}}
-                        <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="userManagement" role="button">User Management</a></li>
+                        <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="/views/userManagement" role="button">User Management</a></li>
                     {{/if}}
-                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
+                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="/views/logout" role="button">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -65,11 +65,11 @@
     </div>
     <div class="d-flex justify-content-end my-5">
         {{#if hasPrevPage}}
-            <a type="button" class="btn btn-sm btn-light border border-2" href="products?page={{prevPage}}">Previous</a>
+            <a type="button" class="btn btn-sm btn-light border border-2" href="/views/products?page={{prevPage}}">Previous</a>
         {{/if}}
         <p class="row align-items-center mx-3 my-0">Page {{page}} of {{totalPages}}</p>
         {{#if hasNextPage}}
-            <a type="button" class="btn btn-sm btn-light border border-2 px-3" href="products?page={{nextPage}}">Next</a>
+            <a type="button" class="btn btn-sm btn-light border border-2 px-3" href="/views/products?page={{nextPage}}">Next</a>
         {{/if}}
     </div>
 </div>

@@ -14,7 +14,7 @@
             </div>
         </div>
         {{/if}}
-            <form onfocusin="hideMessage()" action="register" method="post">
+            <form onfocusin="hideMessage()" action="/views/register" method="post">
                 <label for="first_name" class="col-form-label">First Name</label>
                 <input type="text" class="form-control" name="first_name" id="first_name" required="true">
                 <label for="last_name" class="col-form-label">Last Name</label>
@@ -29,7 +29,7 @@
             </form>
             <div class="mt-4 text-center">
                 <p class="m-0"><span class="align-middle">You already have an account? Please</span> 
-                    <a class="btn btn-sm btn-outline-dark border-0 ms-1" href="login">Login Here</a>
+                    <a class="btn btn-sm btn-outline-dark border-0 ms-1" href="/views/login">Login Here</a>
                 </p>
             </div>
         </div>
