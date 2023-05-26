@@ -1,3 +1,4 @@
+import moment from "moment";
 export default class ProductDTO {
     constructor(product){
         this.id = product._id || product.id;
@@ -10,7 +11,7 @@ export default class ProductDTO {
         this.code = product.code;
         this.stock = product.stock;
         this.owner = product.owner;
-        this.createdAt = product.createdAt;
-        this.updatedAt = product.updatedAt;
+        this.createdAt = moment(product.createdAt).format('MM/DD/YYYY');
+        this.updatedAt = moment(product.updatedAt).format('MM/DD/YYYY');
     }
 }

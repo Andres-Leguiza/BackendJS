@@ -56,8 +56,8 @@ export async function changeRole(req, res, next){
     let user = await factory.user.getUserById(uid);
     if(!user) throw CustomError.createError(ERRORS.USER_NOT_FOUND, null, email); 
     user.role === Constants.PREMIUM ? 
-    await factory.user.updateUser(user.email, { ...user, role: Constants.USER }) :
-    await factory.user.updateUser(user.email, { ...user, role: Constants.PREMIUM });
+    await factory.user.updateUser(user.email, { role: Constants.USER }) :
+    await factory.user.updateUser(user.email, { role: Constants.PREMIUM });
     res.json({
       message: Constants.USER_ROLE_CHANGE_SUCCESS,
       status: Constants.STATUS.SUCCESS

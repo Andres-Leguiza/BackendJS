@@ -14,7 +14,7 @@ export function handleRoles(validRoles) {
 export function handleRolesForView(validRoles) {
     return (req, res, next) => {
         const user = req.user;
-        const isAdmin = user?.role == ADMIN;
+        const isAdmin = user?.role === ADMIN;
         if (!user || !validRoles.includes(user.role)) {
             res.render(HOME, { error: ERRORS.UNAUTHORIZED_OPERATION.message, isAdmin, user });
         } else return next();

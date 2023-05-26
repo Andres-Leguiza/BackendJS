@@ -3,12 +3,16 @@
         <a class="navbar-brand" href="/views/products">eCommerce</a>
         <div class="d-flex align-items-center">
             <div><a class="text-center" href="/views/carts/{{user.cart}}" role="button">
-                <img src="/cart.png" alt="Cart" width="48"></a></div>
+                <img src="/cart.png" alt="Cart" width="48"></a>
+            </div>
             <div class="btn-group ms-3">
                 <button class="btn border-0 me-5" type="button" id="defaultDropdown" data-bs-toggle="dropdown" 
                         data-bs-auto-close="true" aria-expanded="false">
                     <img src="/User.png" alt="User" width="48"></button>
                 <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
+                    {{#if isAdmin}}
+                        <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="userManagement" role="button">User Management</a></li>
+                    {{/if}}
                     <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
                 </ul>
             </div>
@@ -34,7 +38,7 @@
         {{/if}}
       </div>
     {{/if}}
-    <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">Products List:</h1>
+    <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">Products List</h1>
     <div id="productsContainer" class="d-flex flex-wrap justify-content-evenly mt-5">
         {{#if productList.length}}
         {{#each productList}}

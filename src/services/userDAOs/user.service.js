@@ -22,7 +22,7 @@ export async function createUser(data) {
 }
 
 export async function getUser(email) {
-    const user = await UserModel.find({ email }).lean();
+    const user = await UserModel.find({ email, deletedAt: { $exists: false } }).lean();
     return user[0];
 }
 

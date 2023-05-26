@@ -18,7 +18,7 @@ export async function createCart(data){
 export async function addProductToCart(cartId, productId){
     const cart = await CartModel.findById(cartId);
     if (cart) {
-        const productToUpdate = cart.products.find(product => product.product == productId);
+        const productToUpdate = cart.products.find(product => product.product === productId);
         if (productToUpdate){
             productToUpdate.quantity = productToUpdate.quantity + 1;
         } else {
@@ -32,7 +32,7 @@ export async function addProductToCart(cartId, productId){
 export async function updateProductQty(cartId, productId, quantity){
     const cart = await CartModel.findById(cartId);
     if (cart) {
-        const productToUpdate = cart.products.find(product => product.product == productId);
+        const productToUpdate = cart.products.find(product => product.product === productId);
         if (productToUpdate){
             productToUpdate.quantity = quantity;
         } else {

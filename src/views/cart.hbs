@@ -12,7 +12,7 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="d-flex justify-content-center mt-3">Shopping Cart:</h1>
+    <h1 class="d-flex justify-content-center mt-3">Shopping Cart</h1>
     <div id="productsContainer" class="d-flex flex-column mt-5">
         {{#if purchase}}
             {{#if success}}
@@ -71,6 +71,10 @@
                     <div class="card-footer d-flex flex-column justify-content-center align-items-center border-top-0">
                         <p class="fw-bold my-0">Quantity</p>
                         <p class="my-0">{{quantity}}</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a class="text-center" href="/views/carts/{{../id}}/products/{{product.id}}" role="button">
+                            <img src="/delete.png" alt="Cart" width="32"></a>
                     </div>
                     <input type="hidden" value="productId_{{product.id}}" />
                 </div>

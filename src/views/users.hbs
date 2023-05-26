@@ -1,0 +1,74 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid d-flex justify-content-between">
+        <a class="navbar-brand" href="/views/products">eCommerce</a>
+        <div class="d-flex align-items-center">
+            <div class="btn-group ms-3">
+                <button class="btn border-0 me-5" type="button" id="defaultDropdown" data-bs-toggle="dropdown" 
+                        data-bs-auto-close="true" aria-expanded="false">
+                    <img src="/User.png" alt="User" width="48"></button>
+                <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="defaultDropdown">
+                    <li><a class="btn btn-sm btn-outline-dark border-0 w-100" href="logout" role="button">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+{{#if error}}
+    <div class="d-flex justify-content-center">
+        <div id="alert_error" class="alert alert-danger">
+            <strong>{{error}}</strong>
+        </div>
+    </div>
+{{/if}}
+
+<div class="container">
+    {{#if user}}
+      <div class="ms-5">
+        <h3 class="text-primary text-opacity-75 mt-4">Welcome {{user.first_name}} {{user.last_name}}!</h3>
+        <h5 class="text-primary text-opacity-75 ms-2 mt-1">Email: {{user.email}} - Age: {{user.age}}</h5>
+        <h5 class="text-danger text-opacity-75 ms-2 mt-1">Admin Role</h5>
+      </div>
+    {{/if}}
+    <h1 class="d-flex justify-content-center text-dark text-opacity-75 mt-3">User Management</h1>
+    <div id="usersContainer" class="d-flex mt-5 mb-5">
+        <form class="d-flex align-items-end" action="userSearch" method="get">
+            <label for="email" class="fs-6 fw-bold me-2">Find a user by Email: </label>
+            <input type="email" class="border rounded px-2" size="30" placeholder="user.email@test.com" name="email" id="email" autocomplete="username" required="true">
+            <button class="btn btn-sm btn-outline-dark border-1 ms-2" type="submit">Search</button>
+        </form>
+    </div>
+    {{#if searchUser}}
+    <div class="d-flex mt-3">
+        <div class="card ms-2 my-2">
+            <h5 class="card-header d-flex justify-content-center">{{searchUser.first_name}} {{searchUser.last_name}}</h5>
+            <div class="card-body">
+                <p>Email: {{searchUser.email}}</p>
+                <p>Age: {{searchUser.age}}</p>
+                <p>Role: {{searchUser.role}}</p>
+                <p>Created: {{searchUser.createdAt}}</p>
+                <p>Last Connection: {{searchUser.last_connection}}</p>
+            </div>
+            <hr class="my-1">
+            <div>
+                <form action="changeRole" method="get">
+                    <input type="hidden" name="userId" value="{{searchUser.id}}">
+                    <button class="btn btn-sm btn-warning border-top w-100" type="submit">Change Role</button>
+                </form>
+            </div>
+            <hr class="my-1">
+            <div>
+                <form action="userDelete" method="get">
+                    <input type="hidden" name="email" value="{{searchUser.email}}">
+                    <button class="btn btn-sm btn-danger border-top w-100" onclick="return confirm('Do you want to delete the user?')" type="submit">Delete</button>
+                </form>
+            </div>
+            <input type="hidden" value="userId_{{searchUser.id}}" />
+        </div>
+    </div>
+    {{else}}
+        <h2 class="fw-bold text-danger text-opacity-75 mt-5">{{userNotFound}}</h2>
+    {{/if}}
+    {{#if deleted}}
+        <h3 class="fw-bold text-primary text-opacity-75 mt-5">{{deleted}}</h3>
+    {{/if}}
+</div>

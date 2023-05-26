@@ -6,7 +6,7 @@ import { ERRORS } from '../constants/errors.js';
 export async function getCarts(req, res, next){
     try {
         const carts = await factory.cart.getCarts();
-        if (!carts || carts.length == 0) throw CustomError.createError(ERRORS.CARTS_NOT_FOUND, null, req.user?.email);
+        if (!carts || carts.length === 0) throw CustomError.createError(ERRORS.CARTS_NOT_FOUND, null, req.user?.email);
         res.json({
             carts: carts.cartList,
             status: STATUS.SUCCESS
